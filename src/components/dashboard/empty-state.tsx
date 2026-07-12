@@ -10,6 +10,7 @@ interface EmptyStateProps {
   subtext?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  onCtaClick?: () => void;
 }
 
 export default function EmptyState({
@@ -18,6 +19,7 @@ export default function EmptyState({
   subtext = "Add your first product to see analytics here.",
   ctaLabel = "+ Add Product",
   ctaHref = "/dashboard/products/new",
+  onCtaClick,
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
@@ -34,7 +36,11 @@ export default function EmptyState({
         variant="primary"
         className="mt-5"
         onClick={() => {
-          window.location.href = ctaHref;
+          if (onCtaClick) {
+            onCtaClick();
+          } else {
+            window.location.href = ctaHref;
+          }
         }}
       >
         {ctaLabel}
