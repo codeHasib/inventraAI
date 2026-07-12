@@ -25,7 +25,6 @@ const fadeUp = {
 export default function DashboardPage() {
   const {
     overview,
-    warnings,
     topProducts,
     loading,
     error,
@@ -84,12 +83,7 @@ export default function DashboardPage() {
 
       {/* Inventory Alerts */}
       <motion.div className="col-span-full" variants={fadeUp}>
-        <InventoryAlerts
-          data={warnings}
-          loading={loading}
-          error={error}
-          onRetry={refetch}
-        />
+        <InventoryAlerts />
       </motion.div>
     </motion.div>
   );

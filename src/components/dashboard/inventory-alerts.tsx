@@ -5,16 +5,9 @@ import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
 import Button from "@/components/ui/button";
 import Skeleton from "@/components/ui/skeleton";
-import type { InventoryWarning } from "@/types/dashboard";
+import { useAlerts } from "@/hooks/use-alerts";
 
-interface InventoryAlertsProps {
-  data: InventoryWarning[];
-  loading: boolean;
-  error: string | null;
-  onRetry: () => Promise<void>;
-}
-
-function WarningRow({ item }: { item: InventoryWarning }) {
+function WarningRow({ item }: { item: { _id: string; name: string; sku: string; currentStock: number; minimumStock: number; status: "LOW_STOCK" | "OUT_OF_STOCK"; category?: { name: string } } }) {
   const isOut = item.status === "OUT_OF_STOCK";
 
   return (
@@ -40,13 +33,8 @@ function WarningRow({ item }: { item: InventoryWarning }) {
   );
 }
 
-export default function InventoryAlerts({
-  data: rawWarnings,
-  loading,
-  error,
-  onRetry,
-}: InventoryAlertsProps) {
-  const warnings = Array.isArray(rawWarnings) ? rawWarnings : [];
+export default function InventoryAlerts() {
+  const { warnings, loading, error, refetch } = useAlerts();
 
   return (
     <Card className="p-4">
@@ -70,7 +58,7 @@ export default function InventoryAlerts({
         {error && (
           <Button
             variant="ghost"
-            onClick={onRetry}
+            onClick={refetch}
             className="px-2 py-1 text-xs"
           >
             <RefreshCw className="mr-1 h-3 w-3" />
