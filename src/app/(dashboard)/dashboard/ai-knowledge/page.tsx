@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useKnowledge } from "@/hooks/use-knowledge";
 import DocumentManager from "@/components/knowledge/document-manager";
 import AiChat from "@/components/knowledge/ai-chat";
@@ -19,7 +19,13 @@ export default function AiKnowledgePage() {
     sendChatMessage,
   } = useKnowledge();
 
-  const [messages, setMessages] = useState<ChatMessage[]>(chatHistory);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
+
+  useEffect(() => {
+    if (chatHistory.length > 0) {
+      setMessages(chatHistory);
+    }
+  }, [chatHistory]);
 
   const handleSend = useCallback(
     async (question: string) => {
@@ -41,11 +47,11 @@ export default function AiKnowledgePage() {
       const aiMsg: ChatMessage = {
         role: "ai",
         content: response.answer,
+        chatId: response.chatId,
         report: response.report,
         sources: response.sources,
       };
 
-      console.log("FRONTEND DEBUG - aiMsg built:", aiMsg);
       setMessages((prev) => [...prev, aiMsg]);
       setChatHistory((prev) => [...prev, aiMsg]);
     },

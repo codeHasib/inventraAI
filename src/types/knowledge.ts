@@ -48,6 +48,7 @@ export interface ChatMessageContent {
 export interface ChatMessage {
   role: "user" | "ai";
   content: string | ChatMessageContent;
+  chatId?: string;
   report?: ReportData;
   sources?: ChatSource[];
   createdAt?: string;
@@ -55,6 +56,7 @@ export interface ChatMessage {
 
 export interface ChatResponse {
   answer: string | ChatMessageContent;
+  chatId?: string;
   sources: ChatSource[];
   report?: ReportData;
 }

@@ -84,27 +84,53 @@ export function useKnowledge() {
   const fetchChatHistory = useCallback(async () => {
     try {
       const { data: res } = await api.get("/ai/knowledge/chat/history");
-      const raw = res?.data;
-      if (Array.isArray(raw)) {
-        setChatHistory(
-          raw.map((m: Record<string, unknown>) => {
-            // Preserve object content if backend sends it
-            const rawContent = m.content ?? m.message;
-            const content: string | ChatMessageContent =
-              typeof rawContent === "object" && rawContent !== null
-                ? (rawContent as ChatMessageContent)
-                : String(rawContent ?? "");
+      const raw = res?.data?.data ?? res?.data;
+      if (!Array.isArray(raw)) return;
 
-            return {
-              role: (m.role === "user" ? "user" : "ai") as "user" | "ai",
-              content,
-              report: m.report as ChatResponse["report"] | undefined,
-              sources: Array.isArray(m.sources) ? m.sources : undefined,
-              createdAt: m.createdAt as string | undefined,
-            };
-          }),
-        );
+      const messages: ChatMessage[] = [];
+      for (const entry of raw) {
+        const entryId = String(entry._id ?? "");
+        const question = String(entry.question ?? "");
+        const rawAnswer = entry.answer;
+        const sources = Array.isArray(entry.sources) ? entry.sources : [];
+
+        if (question) {
+          messages.push({ role: "user", content: question, chatId: entryId });
+        }
+
+        if (rawAnswer) {
+          let aiContent: string | ChatMessageContent;
+          let report: ChatResponse["report"] | undefined;
+
+          if (typeof rawAnswer === "object" && rawAnswer !== null) {
+            const obj = rawAnswer as Record<string, unknown>;
+            if (obj.report && typeof obj.report === "object") {
+              report = obj.report as ChatResponse["report"];
+              aiContent = String(obj.summary ?? obj.answer ?? "");
+            } else if (obj.sections || obj.recommendations || obj.title) {
+              report = rawAnswer as unknown as ChatResponse["report"];
+              aiContent = String(obj.summary ?? "");
+            } else {
+              aiContent = rawAnswer as ChatMessageContent;
+            }
+          } else {
+            aiContent = String(rawAnswer);
+            try {
+              const parsed = JSON.parse(aiContent);
+              if (parsed && typeof parsed === "object") {
+                if (parsed.report) report = parsed.report;
+                else if (parsed.sections || parsed.recommendations) report = parsed;
+              }
+            } catch {
+              // plain text, fine
+            }
+          }
+
+          messages.push({ role: "ai", content: aiContent, chatId: entryId, report, sources });
+        }
       }
+
+      setChatHistory(messages);
     } catch {
       // chat history is non-critical
     }
@@ -118,21 +144,7 @@ export function useKnowledge() {
           question,
         });
 
-        // DEBUG: log the full API envelope
-        console.log("FRONTEND DEBUG - API envelope:", res);
-        console.log("FRONTEND DEBUG - res.data:", res?.data);
-        console.log("FRONTEND DEBUG - res.data.data:", res?.data?.data);
-
         const raw = res?.data?.data ?? res?.data;
-
-        // DEBUG: log what we extracted
-        console.log("FRONTEND DEBUG - raw answer:", raw?.answer);
-        console.log("FRONTEND DEBUG - raw report:", raw?.report);
-        console.log(
-          "FRONTEND DEBUG - answer type:",
-          typeof raw?.answer,
-          Array.isArray(raw?.answer) ? "(array)" : "",
-        );
 
         // Preserve object content — don't stringify
         const rawAnswer = raw?.answer;
@@ -152,16 +164,13 @@ export function useKnowledge() {
           }
         }
 
-        const result: ChatResponse = {
+        return {
           answer: content,
+          chatId: String(raw?._id ?? raw?.chatId ?? ""),
           sources: Array.isArray(raw?.sources) ? raw.sources : [],
           report,
         };
-
-        console.log("FRONTEND DEBUG - final result:", result);
-        return result;
       } catch (err: unknown) {
-        console.error("FRONTEND DEBUG - API error:", err);
         const msg =
           err instanceof Error ? err.message : "Failed to get answer";
         toast.error(msg);

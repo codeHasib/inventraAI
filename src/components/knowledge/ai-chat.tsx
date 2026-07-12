@@ -28,7 +28,7 @@ function AiMessageBubble({ msg }: { msg: ChatMessage }) {
   return (
     <div className="space-y-2">
       {report ? (
-        <ReportView data={report} />
+        <ReportView data={report} chatId={msg.chatId} />
       ) : null}
       {text && (
         <div
