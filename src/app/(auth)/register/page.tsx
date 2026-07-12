@@ -59,7 +59,19 @@ export default function RegisterPage() {
     }
 
     setSuccess(true);
-    setTimeout(() => router.push("/dashboard"), 900);
+
+    // Fetch session to determine redirect target
+    try {
+      const { data: session } = await authClient.getSession();
+      const user = session?.user as
+        | { shopId?: string | null }
+        | undefined;
+      const destination = user?.shopId ? "/dashboard" : "/onboard";
+      setTimeout(() => router.push(destination), 900);
+    } catch {
+      // Session fetch failed — new user has no shop, go to onboard
+      setTimeout(() => router.push("/onboard"), 900);
+    }
   };
 
   return (
@@ -87,7 +99,7 @@ export default function RegisterPage() {
             Account created!
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Redirecting to your dashboard&hellip;
+            Redirecting&hellip;
           </p>
         </motion.div>
       ) : (

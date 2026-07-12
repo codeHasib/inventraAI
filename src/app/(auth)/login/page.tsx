@@ -48,7 +48,19 @@ export default function LoginPage() {
     }
 
     setSuccess(true);
-    setTimeout(() => router.push("/dashboard"), 900);
+
+    // Fetch session to determine redirect target
+    try {
+      const { data: session } = await authClient.getSession();
+      const user = session?.user as
+        | { shopId?: string | null }
+        | undefined;
+      const destination = user?.shopId ? "/dashboard" : "/onboard";
+      setTimeout(() => router.push(destination), 900);
+    } catch {
+      // Session fetch failed — default to dashboard
+      setTimeout(() => router.push("/dashboard"), 900);
+    }
   };
 
   return (
@@ -71,7 +83,7 @@ export default function LoginPage() {
             Welcome back!
           </p>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Redirecting to your dashboard&hellip;
+            Redirecting&hellip;
           </p>
         </motion.div>
       ) : (

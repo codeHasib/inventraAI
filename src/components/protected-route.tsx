@@ -18,6 +18,13 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 600;
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export default function ProtectedRoute({
   children,
   requireAuth = true,
@@ -31,37 +38,52 @@ export default function ProtectedRoute({
     let cancelled = false;
 
     async function check() {
-      try {
-        const { data: session } = await authClient.getSession();
-        if (cancelled) return;
+      let lastError: unknown = null;
 
-        const user = session?.user as SessionUser | undefined;
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const { data: session } = await authClient.getSession();
+          if (cancelled) return;
 
-        if (requireAuth && !user) {
-          router.replace(redirectTo);
-          return;
-        }
+          const user = session?.user as SessionUser | undefined;
 
-        if (!requireAuth && user) {
-          router.replace(redirectTo);
-          return;
-        }
-
-        setAuthorized(true);
-      } catch {
-        if (!cancelled) {
-          if (requireAuth) {
+          if (requireAuth && !user) {
+            if (attempt < MAX_RETRIES) {
+              await delay(RETRY_DELAY_MS);
+              continue;
+            }
             router.replace(redirectTo);
-          } else {
-            setAuthorized(true);
+            return;
+          }
+
+          if (!requireAuth && user) {
+            router.replace(redirectTo);
+            return;
+          }
+
+          setAuthorized(true);
+          return;
+        } catch (err) {
+          lastError = err;
+          if (attempt < MAX_RETRIES) {
+            await delay(RETRY_DELAY_MS);
           }
         }
-      } finally {
-        if (!cancelled) setChecking(false);
+      }
+
+      if (!cancelled) {
+        if (requireAuth && lastError) {
+          router.replace(redirectTo);
+        } else if (!requireAuth) {
+          setAuthorized(true);
+        }
       }
     }
 
-    check();
+    check().finally(() => {
+      if (!cancelled) setChecking(false);
+    });
+
     return () => {
       cancelled = true;
     };
@@ -69,8 +91,13 @@ export default function ProtectedRoute({
 
   if (checking) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600 dark:border-gray-700 dark:border-t-blue-500" />
+          <p className="text-sm text-gray-400 dark:text-gray-500">
+            Loading&hellip;
+          </p>
+        </div>
       </div>
     );
   }

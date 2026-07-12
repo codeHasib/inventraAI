@@ -13,6 +13,12 @@ type SessionUser = {
 };
 
 const SKIP_KEY = "inventraai_skip_onboarding";
+const MAX_RETRIES = 2;
+const RETRY_DELAY_MS = 600;
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 export default function DashboardGuard({
   children,
@@ -27,35 +33,54 @@ export default function DashboardGuard({
     let cancelled = false;
 
     async function check() {
-      try {
-        const { data: session } = await authClient.getSession();
-        if (cancelled) return;
+      let lastError: unknown = null;
 
-        const user = session?.user as SessionUser | undefined;
+      for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+        try {
+          const { data: session } = await authClient.getSession();
+          if (cancelled) return;
 
-        if (!user) {
+          const user = session?.user as SessionUser | undefined;
+
+          if (!user) {
+            if (attempt < MAX_RETRIES) {
+              await delay(RETRY_DELAY_MS);
+              continue;
+            }
+            router.replace("/");
+            return;
+          }
+
+          const skipped =
+            typeof window !== "undefined" &&
+            localStorage.getItem(SKIP_KEY) === "true";
+
+          if (!user.shopId && !skipped) {
+            router.replace("/onboard");
+            return;
+          }
+
+          setAuthorized(true);
+          return;
+        } catch (err) {
+          lastError = err;
+          if (attempt < MAX_RETRIES) {
+            await delay(RETRY_DELAY_MS);
+          }
+        }
+      }
+
+      if (!cancelled) {
+        if (lastError) {
           router.replace("/");
-          return;
         }
-
-        const skipped =
-          typeof window !== "undefined" &&
-          localStorage.getItem(SKIP_KEY) === "true";
-
-        if (!user.shopId && !skipped) {
-          router.replace("/onboard");
-          return;
-        }
-
-        setAuthorized(true);
-      } catch {
-        if (!cancelled) router.replace("/");
-      } finally {
-        if (!cancelled) setChecking(false);
       }
     }
 
-    check();
+    check().finally(() => {
+      if (!cancelled) setChecking(false);
+    });
+
     return () => {
       cancelled = true;
     };
@@ -63,8 +88,13 @@ export default function DashboardGuard({
 
   if (checking) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-gray-500">Loading...</p>
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600 dark:border-gray-700 dark:border-t-blue-500" />
+          <p className="text-sm text-gray-400 dark:text-gray-500">
+            Loading&hellip;
+          </p>
+        </div>
       </div>
     );
   }
