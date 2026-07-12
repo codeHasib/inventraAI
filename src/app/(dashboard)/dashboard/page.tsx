@@ -6,7 +6,6 @@ import StatsCards from "@/components/dashboard/stats-cards";
 import RevenueChart from "@/components/dashboard/revenue-chart";
 import TopProducts from "@/components/dashboard/top-products";
 import InventoryAlerts from "@/components/dashboard/inventory-alerts";
-import AiQuickAsk from "@/components/dashboard/ai-quick-ask";
 
 const stagger = {
   hidden: {},
@@ -46,11 +45,6 @@ export default function DashboardPage() {
         <p className="text-sm text-slate-500 dark:text-slate-400">
           Welcome back — here is an overview of your business.
         </p>
-      </motion.div>
-
-      {/* AI Quick-Ask */}
-      <motion.div className="col-span-full" variants={fadeUp}>
-        <AiQuickAsk />
       </motion.div>
 
       {/* Stats row */}

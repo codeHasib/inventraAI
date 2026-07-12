@@ -53,7 +53,7 @@ const NAV_STRUCTURE: (NavItem | NavGroup)[] = [
       { href: "/dashboard/expenses", label: "Expenses", icon: Receipt },
     ],
   },
-  { href: "/dashboard/ai-hub", label: "AI Hub", icon: Sparkles },
+  { href: "/dashboard/ai-knowledge", label: "AI Hub", icon: Sparkles },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
@@ -118,7 +118,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
 
             const groupKey = `group-${i}`;
             const groupActive = entry.items.some((item) =>
-              isActiveItem(pathname, item.href)
+              isActiveItem(pathname, item.href),
             );
             const isOpen = openGroups[groupKey] ?? groupActive;
 

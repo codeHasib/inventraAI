@@ -53,7 +53,7 @@ const NAV_STRUCTURE: (NavItem | NavGroup)[] = [
       { href: "/dashboard/expenses", label: "Expenses", icon: Receipt },
     ],
   },
-  { href: "/dashboard/ai-hub", label: "AI Hub", icon: Sparkles },
+  { href: "/dashboard/ai-knowledge", label: "AI Hub", icon: Sparkles },
   { href: "/dashboard/settings", label: "Settings", icon: Settings },
 ];
 
@@ -63,13 +63,7 @@ function isActiveItem(pathname: string, href: string) {
     : pathname.startsWith(href);
 }
 
-function NavEntry({
-  item,
-  pathname,
-}: {
-  item: NavItem;
-  pathname: string;
-}) {
+function NavEntry({ item, pathname }: { item: NavItem; pathname: string }) {
   const active = isActiveItem(pathname, item.href);
   return (
     <Link
