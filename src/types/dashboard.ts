@@ -1,12 +1,9 @@
 export interface DashboardOverview {
   totalRevenue: number;
-  totalSales: number;
-  lowStockAlerts: number;
-  recentExpenses: number;
-  revenueChange: number;
-  salesChange: number;
-  expensesChange: number;
-  alertsChange: number;
+  totalExpenses: number;
+  totalPurchases: number;
+  totalSalesCount: number;
+  totalProducts: number;
 }
 
 export interface RevenueDataPoint {
@@ -52,10 +49,5 @@ export interface DashboardState {
     warnings: string | null;
     topProducts: string | null;
   };
-  refetch: {
-    overview: () => Promise<void>;
-    revenue: () => Promise<void>;
-    warnings: () => Promise<void>;
-    topProducts: () => Promise<void>;
-  };
+  refetch: () => Promise<void>;
 }

@@ -25,11 +25,10 @@ const fadeUp = {
 export default function DashboardPage() {
   const {
     overview,
-    revenue,
     warnings,
     topProducts,
     loading,
-    errors,
+    error,
     refetch,
   } = useDashboard();
 
@@ -60,17 +59,17 @@ export default function DashboardPage() {
         <StatsCards
           data={overview}
           loading={loading}
-          error={errors.overview}
+          error={error}
         />
       </motion.div>
 
-      {/* Revenue chart */}
+      {/* Revenue chart — no data from /dashboard/stats, shows empty state */}
       <motion.div className="col-span-full lg:col-span-8" variants={fadeUp}>
         <RevenueChart
-          data={revenue}
+          data={null}
           loading={loading}
-          error={errors.revenue}
-          onRetry={refetch.revenue}
+          error={null}
+          onRetry={refetch}
         />
       </motion.div>
 
@@ -79,8 +78,8 @@ export default function DashboardPage() {
         <TopProducts
           products={topProducts}
           loading={loading}
-          error={errors.topProducts}
-          onRetry={refetch.topProducts}
+          error={error}
+          onRetry={refetch}
         />
       </motion.div>
 
@@ -89,8 +88,8 @@ export default function DashboardPage() {
         <InventoryAlerts
           warnings={warnings}
           loading={loading}
-          error={errors.warnings}
-          onRetry={refetch.warnings}
+          error={error}
+          onRetry={refetch}
         />
       </motion.div>
     </motion.div>
