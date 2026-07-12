@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import Sidebar from "@/components/dashboard/sidebar";
+import Navbar from "@/components/dashboard/navbar";
+import MobileSidebar from "@/components/dashboard/mobile-sidebar";
 
 type SessionUser = {
   id: string;
@@ -28,6 +31,7 @@ export default function DashboardGuard({
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -102,8 +106,27 @@ export default function DashboardGuard({
   if (!authorized) return null;
 
   return (
-    <div className="min-h-screen">
-      <main>{children}</main>
+    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
+      {/* Desktop sidebar */}
+      <Sidebar />
+
+      {/* Mobile sidebar overlay */}
+      <MobileSidebar
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
+
+      {/* Main content area */}
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <Navbar
+          mobileOpen={mobileOpen}
+          onToggleMobile={() => setMobileOpen((o) => !o)}
+        />
+
+        <main className="flex-1 overflow-y-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

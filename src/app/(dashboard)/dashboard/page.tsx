@@ -1,64 +1,98 @@
 "use client";
 
-import { useState } from "react";
-import api from "@/lib/axios";
+import { motion } from "framer-motion";
+import { useDashboard } from "@/hooks/use-dashboard";
+import StatsCards from "@/components/dashboard/stats-cards";
+import RevenueChart from "@/components/dashboard/revenue-chart";
+import TopProducts from "@/components/dashboard/top-products";
+import InventoryAlerts from "@/components/dashboard/inventory-alerts";
+import AiQuickAsk from "@/components/dashboard/ai-quick-ask";
+
+const stagger = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.07,
+    },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
+};
 
 export default function DashboardPage() {
-  const [response, setResponse] = useState<string | null>(null);
-  const [status, setStatus] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const testConnection = async () => {
-    setLoading(true);
-    setResponse(null);
-    setStatus(null);
-
-    try {
-      const res = await api.get("/shops");
-      setStatus(res.status);
-      setResponse(JSON.stringify(res.data, null, 2));
-    } catch (err: any) {
-      const resStatus = err.response?.status ?? "Network Error";
-      const body = err.response?.data ?? { message: err.message };
-      setStatus(resStatus);
-      setResponse(JSON.stringify(body, null, 2));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    overview,
+    revenue,
+    warnings,
+    topProducts,
+    loading,
+    errors,
+    refetch,
+  } = useDashboard();
 
   return (
-    <div className="p-8 max-w-3xl">
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
+    <motion.div
+      className="grid grid-cols-1 gap-6 p-6 md:grid-cols-12"
+      variants={stagger}
+      initial="hidden"
+      animate="show"
+    >
+      {/* Header */}
+      <motion.div className="col-span-full space-y-1" variants={fadeUp}>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          Dashboard
+        </h1>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Welcome back — here is an overview of your business.
+        </p>
+      </motion.div>
 
-      <button
-        onClick={testConnection}
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-      >
-        {loading ? "Testing..." : "Test Backend Connection"}
-      </button>
+      {/* AI Quick-Ask */}
+      <motion.div className="col-span-full" variants={fadeUp}>
+        <AiQuickAsk />
+      </motion.div>
 
-      {status !== null && (
-        <div className="mt-6">
-          <div className="flex items-center gap-3 mb-3">
-            <span className="text-sm font-medium">Status:</span>
-            <span
-              className={`px-2 py-1 rounded text-sm font-mono ${
-                status >= 200 && status < 300
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
-              }`}
-            >
-              {status}
-            </span>
-          </div>
+      {/* Stats row */}
+      <motion.div className="col-span-full" variants={fadeUp}>
+        <StatsCards
+          data={overview}
+          loading={loading}
+          error={errors.overview}
+        />
+      </motion.div>
 
-          <pre className="bg-gray-900 text-green-400 p-4 rounded overflow-x-auto text-sm">
-            {response}
-          </pre>
-        </div>
-      )}
-    </div>
+      {/* Revenue chart */}
+      <motion.div className="col-span-full lg:col-span-8" variants={fadeUp}>
+        <RevenueChart
+          data={revenue}
+          loading={loading}
+          error={errors.revenue}
+          onRetry={refetch.revenue}
+        />
+      </motion.div>
+
+      {/* Top Products */}
+      <motion.div className="col-span-full lg:col-span-4" variants={fadeUp}>
+        <TopProducts
+          products={topProducts}
+          loading={loading}
+          error={errors.topProducts}
+          onRetry={refetch.topProducts}
+        />
+      </motion.div>
+
+      {/* Inventory Alerts */}
+      <motion.div className="col-span-full" variants={fadeUp}>
+        <InventoryAlerts
+          warnings={warnings}
+          loading={loading}
+          error={errors.warnings}
+          onRetry={refetch.warnings}
+        />
+      </motion.div>
+    </motion.div>
   );
 }
