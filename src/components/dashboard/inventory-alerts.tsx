@@ -8,7 +8,7 @@ import Skeleton from "@/components/ui/skeleton";
 import type { InventoryWarning } from "@/types/dashboard";
 
 interface InventoryAlertsProps {
-  warnings: InventoryWarning[];
+  data: InventoryWarning[];
   loading: boolean;
   error: string | null;
   onRetry: () => Promise<void>;
@@ -41,7 +41,7 @@ function WarningRow({ item }: { item: InventoryWarning }) {
 }
 
 export default function InventoryAlerts({
-  warnings: rawWarnings,
+  data: rawWarnings,
   loading,
   error,
   onRetry,

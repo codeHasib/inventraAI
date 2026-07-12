@@ -8,14 +8,14 @@ import EmptyState from "@/components/dashboard/empty-state";
 import type { TopProduct } from "@/types/dashboard";
 
 interface TopProductsProps {
-  products: TopProduct[];
+  data: TopProduct[];
   loading: boolean;
   error: string | null;
   onRetry: () => Promise<void>;
 }
 
 export default function TopProducts({
-  products: rawProducts,
+  data: rawProducts,
   loading,
   error,
   onRetry,
@@ -84,13 +84,10 @@ export default function TopProducts({
                   <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
                     {p.name}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
-                    {p.totalSold} sold
-                  </p>
                 </div>
               </div>
               <span className="shrink-0 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">
-                ${p.revenue.toLocaleString()}
+                ${(p.revenue ?? 0).toLocaleString()}
               </span>
             </div>
           ))}

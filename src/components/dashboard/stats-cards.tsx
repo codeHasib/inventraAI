@@ -47,8 +47,10 @@ function StatCard({ label, value, icon, iconBg }: StatCardProps) {
 const currency = (v?: number) =>
   `$${(v ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
+type StatKey = "totalRevenue" | "totalSalesCount" | "totalExpenses" | "totalPurchases" | "totalProducts";
+
 const CARDS: {
-  key: keyof DashboardOverview;
+  key: StatKey;
   label: string;
   icon: typeof DollarSign;
   bg: string;
@@ -97,7 +99,7 @@ const CARDS: {
   },
 ];
 
-export default function StatsCards({ data, loading }: StatsCardsProps) {
+export default function StatsCards({ data, loading, error }: StatsCardsProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -117,7 +119,7 @@ export default function StatsCards({ data, loading }: StatsCardsProps) {
         <StatCard
           key={c.key}
           label={c.label}
-          value={data ? c.format(data[c.key]) : "\u2014"}
+          value={data ? c.format(data?.[c.key]) : "\u2014"}
           icon={<c.icon className={`h-5 w-5 ${c.iconColor}`} />}
           iconBg={c.bg}
         />

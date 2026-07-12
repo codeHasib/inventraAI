@@ -63,20 +63,19 @@ export default function DashboardPage() {
         />
       </motion.div>
 
-      {/* Revenue chart — no data from /dashboard/stats, shows empty state */}
+      {/* Revenue chart */}
       <motion.div className="col-span-full lg:col-span-8" variants={fadeUp}>
         <RevenueChart
-          data={null}
+          data={overview?.revenueData ?? []}
           loading={loading}
-          error={null}
-          onRetry={refetch}
+          error={error}
         />
       </motion.div>
 
       {/* Top Products */}
       <motion.div className="col-span-full lg:col-span-4" variants={fadeUp}>
         <TopProducts
-          products={topProducts}
+          data={topProducts}
           loading={loading}
           error={error}
           onRetry={refetch}
@@ -86,7 +85,7 @@ export default function DashboardPage() {
       {/* Inventory Alerts */}
       <motion.div className="col-span-full" variants={fadeUp}>
         <InventoryAlerts
-          warnings={warnings}
+          data={warnings}
           loading={loading}
           error={error}
           onRetry={refetch}

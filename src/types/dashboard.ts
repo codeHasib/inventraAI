@@ -4,18 +4,12 @@ export interface DashboardOverview {
   totalPurchases: number;
   totalSalesCount: number;
   totalProducts: number;
+  revenueData: RevenueDataPoint[];
 }
 
 export interface RevenueDataPoint {
   date: string;
   revenue: number;
-}
-
-export interface RevenueResponse {
-  current: number;
-  previous: number;
-  change: number;
-  data: RevenueDataPoint[];
 }
 
 export interface InventoryWarning {
@@ -35,19 +29,4 @@ export interface TopProduct {
   sellingPrice: number;
   totalSold: number;
   revenue: number;
-}
-
-export interface DashboardState {
-  overview: DashboardOverview | null;
-  revenue: RevenueResponse | null;
-  warnings: InventoryWarning[];
-  topProducts: TopProduct[];
-  loading: boolean;
-  errors: {
-    overview: string | null;
-    revenue: string | null;
-    warnings: string | null;
-    topProducts: string | null;
-  };
-  refetch: () => Promise<void>;
 }
