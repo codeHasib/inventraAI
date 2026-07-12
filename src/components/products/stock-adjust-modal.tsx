@@ -9,7 +9,14 @@ interface StockAdjustModalProps {
   open: boolean;
   onClose: () => void;
   product: Product | null;
-  onAdjust: (id: string, body: { quantity: number; type: "ADD" | "SUBTRACT" | "SET"; reason?: string }) => Promise<unknown>;
+  onAdjust: (
+    id: string,
+    body: {
+      currentStock: number;
+      type: "ADD" | "SUBTRACT" | "SET";
+      reason?: string;
+    },
+  ) => Promise<unknown>;
 }
 
 export default function StockAdjustModal({
@@ -24,18 +31,61 @@ export default function StockAdjustModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const q = isNaN(Number(quantity)) ? 0 : Number(quantity);
+  //   if (q < 0) {
+  //     setError("Quantity must be a non-negative number");
+  //     return;
+  //   }
+  //   if (!product) return;
+  //   setError("");
+  //   setLoading(true);
+  //   try {
+  //     await onAdjust(product._id, {
+  //       quantity: q,
+  //       type,
+  //       reason: reason.trim() || undefined,
+  //     });
+  //     setQuantity("");
+  //     setReason("");
+  //     onClose();
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const q = parseInt(quantity, 10);
-    if (isNaN(q) || q < 0) {
+    const q = isNaN(Number(quantity)) ? 0 : Number(quantity);
+
+    if (q < 0) {
       setError("Quantity must be a non-negative number");
       return;
     }
     if (!product) return;
+
+    const currentStock = product.currentStock;
+    let finalStock = 0;
+
+    if (type === "ADD") finalStock = currentStock + q;
+    else if (type === "SUBTRACT") finalStock = currentStock - q;
+    else finalStock = q;
+
+    if (finalStock < 0) {
+      setError("Resulting stock cannot be negative");
+      return;
+    }
+
     setError("");
     setLoading(true);
     try {
-      await onAdjust(product._id, { quantity: q, type, reason: reason.trim() || undefined });
+      await onAdjust(product._id, {
+        currentStock: finalStock,
+        type,
+        reason: reason.trim() || undefined,
+      });
+
       setQuantity("");
       setReason("");
       onClose();
@@ -55,15 +105,21 @@ export default function StockAdjustModal({
     <Modal open={open} onClose={handleClose} title="Adjust Stock">
       {product && (
         <div className="mb-4 rounded-lg bg-slate-50 px-4 py-3 dark:bg-slate-800">
-          <p className="text-sm font-medium text-gray-900 dark:text-white">{product.name}</p>
+          <p className="text-sm font-medium text-gray-900 dark:text-white">
+            {product.name}
+          </p>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Current stock: <span className="font-semibold">{product.currentStock}</span> {product.unit}
+            Current stock:{" "}
+            <span className="font-semibold">{product.currentStock}</span>{" "}
+            {product.unit}
           </p>
         </div>
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Action</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Action
+          </label>
           <div className="flex gap-2">
             {(["ADD", "SUBTRACT", "SET"] as const).map((t) => (
               <button
@@ -76,7 +132,11 @@ export default function StockAdjustModal({
                     : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
                 }`}
               >
-                {t === "ADD" ? "+ Add" : t === "SUBTRACT" ? "- Subtract" : "= Set"}
+                {t === "ADD"
+                  ? "+ Add"
+                  : t === "SUBTRACT"
+                    ? "- Subtract"
+                    : "= Set"}
               </button>
             ))}
           </div>
@@ -89,7 +149,10 @@ export default function StockAdjustModal({
             type="number"
             min="0"
             value={quantity}
-            onChange={(e) => { setQuantity(e.target.value); setError(""); }}
+            onChange={(e) => {
+              setQuantity(e.target.value);
+              setError("");
+            }}
             placeholder="0"
             autoFocus
             className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 ${
@@ -99,7 +162,9 @@ export default function StockAdjustModal({
           {error && <p className="text-xs text-red-500">{error}</p>}
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Reason (optional)</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Reason (optional)
+          </label>
           <input
             type="text"
             value={reason}
@@ -109,7 +174,12 @@ export default function StockAdjustModal({
           />
         </div>
         <div className="flex justify-end gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
-          <Button type="button" variant="secondary" onClick={handleClose} disabled={loading}>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={handleClose}
+            disabled={loading}
+          >
             Cancel
           </Button>
           <Button type="submit" variant="primary" loading={loading}>

@@ -86,7 +86,7 @@ export function useProducts(page = 1, limit = 20) {
     }
   };
 
-  const adjustStock = async (id: string, body: { quantity: number; type: "ADD" | "SUBTRACT" | "SET"; reason?: string }) => {
+  const adjustStock = async (id: string, body: { currentStock: number; type: "ADD" | "SUBTRACT" | "SET"; reason?: string }) => {
     try {
       const { data: res } = await api.patch(`/products/${id}/stock`, body);
       toast.success("Stock updated");

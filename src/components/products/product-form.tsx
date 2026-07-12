@@ -69,8 +69,8 @@ export default function ProductForm({
     await onSubmit({
       name: name.trim(),
       sku: sku.trim().toUpperCase(),
-      categoryId,
-      supplierId,
+      categoryId: typeof categoryId === "object" && categoryId !== null ? (categoryId as unknown as { id: string }).id : categoryId,
+      supplierId: typeof supplierId === "object" && supplierId !== null ? (supplierId as unknown as { id: string }).id : supplierId,
       description: description.trim(),
       brand: brand.trim(),
       purchasePrice: parseFloat(purchasePrice) || 0,
