@@ -44,7 +44,7 @@ export default function ExpenseForm({ onSubmit, onCancel, loading }: ExpenseForm
       amount: parseFloat(amount),
       category,
       paymentMethod,
-      expenseDate: date,
+      expenseDate: new Date(date).toISOString(),
       vendor: vendor.trim() || undefined,
       notes: notes.trim() || undefined,
     });
