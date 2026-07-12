@@ -12,13 +12,17 @@ type SessionUser = {
   shopId?: string | null;
 };
 
-const SKIP_KEY = "inventraai_skip_onboarding";
-
-export default function DashboardGuard({
-  children,
-}: {
+interface ProtectedRouteProps {
   children: React.ReactNode;
-}) {
+  requireAuth?: boolean;
+  redirectTo?: string;
+}
+
+export default function ProtectedRoute({
+  children,
+  requireAuth = true,
+  redirectTo = "/",
+}: ProtectedRouteProps) {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -33,23 +37,25 @@ export default function DashboardGuard({
 
         const user = session?.user as SessionUser | undefined;
 
-        if (!user) {
-          router.replace("/");
+        if (requireAuth && !user) {
+          router.replace(redirectTo);
           return;
         }
 
-        const skipped =
-          typeof window !== "undefined" &&
-          localStorage.getItem(SKIP_KEY) === "true";
-
-        if (!user.shopId && !skipped) {
-          router.replace("/onboard");
+        if (!requireAuth && user) {
+          router.replace(redirectTo);
           return;
         }
 
         setAuthorized(true);
       } catch {
-        if (!cancelled) router.replace("/");
+        if (!cancelled) {
+          if (requireAuth) {
+            router.replace(redirectTo);
+          } else {
+            setAuthorized(true);
+          }
+        }
       } finally {
         if (!cancelled) setChecking(false);
       }
@@ -59,7 +65,7 @@ export default function DashboardGuard({
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, [router, requireAuth, redirectTo]);
 
   if (checking) {
     return (
@@ -71,9 +77,5 @@ export default function DashboardGuard({
 
   if (!authorized) return null;
 
-  return (
-    <div className="min-h-screen">
-      <main>{children}</main>
-    </div>
-  );
+  return <>{children}</>;
 }

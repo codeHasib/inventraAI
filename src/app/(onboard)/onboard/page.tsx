@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import OnboardingForm from "@/components/onboarding-form";
 
 type SessionUser = {
   id: string;
@@ -14,11 +15,7 @@ type SessionUser = {
 
 const SKIP_KEY = "inventraai_skip_onboarding";
 
-export default function DashboardGuard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function OnboardPage() {
   const router = useRouter();
   const [authorized, setAuthorized] = useState(false);
   const [checking, setChecking] = useState(true);
@@ -38,12 +35,8 @@ export default function DashboardGuard({
           return;
         }
 
-        const skipped =
-          typeof window !== "undefined" &&
-          localStorage.getItem(SKIP_KEY) === "true";
-
-        if (!user.shopId && !skipped) {
-          router.replace("/onboard");
+        if (user.shopId) {
+          router.replace("/dashboard");
           return;
         }
 
@@ -61,6 +54,11 @@ export default function DashboardGuard({
     };
   }, [router]);
 
+  const handleSkip = () => {
+    localStorage.setItem(SKIP_KEY, "true");
+    router.push("/dashboard");
+  };
+
   if (checking) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -72,8 +70,8 @@ export default function DashboardGuard({
   if (!authorized) return null;
 
   return (
-    <div className="min-h-screen">
-      <main>{children}</main>
+    <div className="w-full max-w-lg">
+      <OnboardingForm onSkip={handleSkip} />
     </div>
   );
 }
