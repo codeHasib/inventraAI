@@ -138,7 +138,7 @@ export default function ProductForm({
                 : "border-zinc-200 dark:border-white/10"
             }`}
           >
-            <option value="" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Select a supplier</option>
+            <option value="" className="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-50">Select a supplier</option>
             {suppliers.map((s) => (
               <option key={s._id} value={s._id} className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">{s.company || s.name}</option>
             ))}
