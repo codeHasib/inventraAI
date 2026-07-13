@@ -50,11 +50,11 @@ export default function Modal({
     >
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className={`relative z-10 w-full rounded-xl border border-zinc-200/80 bg-white shadow-xl transition-all dark:border-white/[0.08] dark:bg-zinc-900 ${
+        className={`relative z-10 w-full mx-auto rounded-2xl border border-zinc-200/80 bg-white dark:bg-zinc-950 dark:border-white/10 shadow-2xl flex flex-col max-h-[90vh] transition-all ${
           wide ? "max-w-2xl" : "max-w-lg"
         }`}
       >
-        <div className="flex items-center justify-between border-b border-zinc-200/80 px-6 py-4 dark:border-white/[0.08]">
+        <div className="flex items-center justify-between border-b border-zinc-200/80 px-6 py-4 dark:border-white/[0.08] shrink-0">
           <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
             {title}
           </h2>
@@ -65,7 +65,7 @@ export default function Modal({
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="px-6 py-4">{children}</div>
+        <div className="overflow-y-auto p-6 space-y-4 flex-1">{children}</div>
       </div>
     </div>
   );

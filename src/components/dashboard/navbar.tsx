@@ -17,7 +17,8 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
   const router = useRouter();
   const { data: session } = authClient.useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const desktopDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileDropdownRef = useRef<HTMLDivElement>(null);
 
   const { warnings, loading: alertsLoading } = useAlerts();
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
@@ -35,7 +36,10 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      const clickedInsideDesktop = desktopDropdownRef.current?.contains(target);
+      const clickedInsideMobile = mobileDropdownRef.current?.contains(target);
+      if (!clickedInsideDesktop && !clickedInsideMobile) {
         setDropdownOpen(false);
       }
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
@@ -127,7 +131,7 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
           <div className="mx-1 hidden h-6 w-px bg-zinc-200 dark:bg-white/10 sm:block" />
 
           {/* Profile dropdown */}
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative" ref={desktopDropdownRef}>
             <button
               onClick={() => setDropdownOpen((o) => !o)}
               className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-zinc-100 dark:hover:bg-white/5"
@@ -150,7 +154,7 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
             </button>
 
             {dropdownOpen && (
-              <div className="md:absolute md:right-0 md:top-full md:mt-2 md:w-48 md:block z-50 bg-zinc-900 border border-white/10 rounded-xl p-2 shadow-xl">
+              <div className="absolute right-0 top-full mt-2 w-48 z-50 rounded-xl border bg-white dark:bg-zinc-900 shadow-xl p-2 border-zinc-200/80 dark:border-white/10">
                 <div className="border-b border-white/10 px-4 py-3">
                   <p className="text-sm font-medium text-zinc-100">
                     {userName}
@@ -269,7 +273,7 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
             <ThemeToggle />
 
             {/* Profile dropdown — mobile */}
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative" ref={mobileDropdownRef}>
               <button
                 onClick={() => setDropdownOpen((o) => !o)}
                 className="flex h-10 w-10 items-center justify-center rounded-lg transition-colors hover:bg-zinc-100 dark:hover:bg-white/5"
