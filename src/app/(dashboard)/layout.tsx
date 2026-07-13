@@ -29,68 +29,66 @@ export default function DashboardGuard({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<SessionUser | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function check() {
-      let lastError: unknown = null;
-
+    async function checkSession() {
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
-          const { data: session } = await authClient.getSession();
+          const { data } = await authClient.getSession();
           if (cancelled) return;
 
-          const user = session?.user as SessionUser | undefined;
+          const user = data?.user as SessionUser | undefined;
 
           if (!user) {
             if (attempt < MAX_RETRIES) {
               await delay(RETRY_DELAY_MS);
               continue;
             }
-            router.replace("/");
             return;
           }
 
-          const skipped =
-            typeof window !== "undefined" &&
-            localStorage.getItem(SKIP_KEY) === "true";
-
-          if (!user.shopId && !skipped) {
-            router.replace("/onboard");
-            return;
-          }
-
-          setAuthorized(true);
+          setSession(user);
           return;
-        } catch (err) {
-          lastError = err;
+        } catch {
           if (attempt < MAX_RETRIES) {
             await delay(RETRY_DELAY_MS);
           }
         }
       }
-
-      if (!cancelled) {
-        if (lastError) {
-          router.replace("/");
-        }
-      }
     }
 
-    check().finally(() => {
-      if (!cancelled) setChecking(false);
+    checkSession().finally(() => {
+      if (!cancelled) setLoading(false);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, []);
 
-  if (checking) {
+  useEffect(() => {
+    if (loading) return;
+
+    if (!session) {
+      router.replace("/");
+      return;
+    }
+
+    const skipped =
+      typeof window !== "undefined" &&
+      localStorage.getItem(SKIP_KEY) === "true";
+
+    if (!session.shopId && !skipped) {
+      router.replace("/onboard");
+    }
+  }, [loading, session, router]);
+
+  if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-3">
@@ -103,7 +101,7 @@ export default function DashboardGuard({
     );
   }
 
-  if (!authorized) return null;
+  if (!session) return null;
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">

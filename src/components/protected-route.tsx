@@ -31,65 +31,65 @@ export default function ProtectedRoute({
   redirectTo = "/",
 }: ProtectedRouteProps) {
   const router = useRouter();
-  const [authorized, setAuthorized] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<SessionUser | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    async function check() {
-      let lastError: unknown = null;
-
+    async function checkSession() {
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
-          const { data: session } = await authClient.getSession();
+          const { data } = await authClient.getSession();
           if (cancelled) return;
 
-          const user = session?.user as SessionUser | undefined;
+          const user = data?.user as SessionUser | undefined;
 
           if (requireAuth && !user) {
             if (attempt < MAX_RETRIES) {
               await delay(RETRY_DELAY_MS);
               continue;
             }
-            router.replace(redirectTo);
             return;
           }
 
           if (!requireAuth && user) {
-            router.replace(redirectTo);
             return;
           }
 
-          setAuthorized(true);
+          setSession(user ?? null);
           return;
-        } catch (err) {
-          lastError = err;
+        } catch {
           if (attempt < MAX_RETRIES) {
             await delay(RETRY_DELAY_MS);
           }
         }
       }
-
-      if (!cancelled) {
-        if (requireAuth && lastError) {
-          router.replace(redirectTo);
-        } else if (!requireAuth) {
-          setAuthorized(true);
-        }
-      }
     }
 
-    check().finally(() => {
-      if (!cancelled) setChecking(false);
+    checkSession().finally(() => {
+      if (!cancelled) setLoading(false);
     });
 
     return () => {
       cancelled = true;
     };
-  }, [router, requireAuth, redirectTo]);
+  }, [requireAuth]);
 
-  if (checking) {
+  useEffect(() => {
+    if (loading) return;
+
+    if (requireAuth && !session) {
+      router.replace(redirectTo);
+      return;
+    }
+
+    if (!requireAuth && session) {
+      router.replace(redirectTo);
+    }
+  }, [loading, session, requireAuth, redirectTo, router]);
+
+  if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
         <div className="flex flex-col items-center gap-3">
@@ -102,7 +102,7 @@ export default function ProtectedRoute({
     );
   }
 
-  if (!authorized) return null;
+  if (!session) return null;
 
   return <>{children}</>;
 }
