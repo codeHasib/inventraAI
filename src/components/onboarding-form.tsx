@@ -18,7 +18,6 @@ import Input from "@/components/ui/input";
 import Textarea from "@/components/ui/textarea";
 import Select from "@/components/ui/select";
 import Button from "@/components/ui/button";
-import Card from "@/components/ui/card";
 import {
   type OnboardingFormData,
   onboardingSchema,
@@ -160,243 +159,276 @@ export default function OnboardingForm({ onSkip }: OnboardingFormProps) {
 
   if (success) {
     return (
-      <Card className="text-center">
+      <div className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-10 shadow-2xl backdrop-blur-xl text-center">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-50 dark:bg-green-900/20"
+          className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-indigo-500/20 shadow-[0_0_30px_rgba(99,102,241,0.3)]"
         >
-          <CheckCircle className="h-8 w-8 text-green-500" />
+          <CheckCircle className="h-8 w-8 text-indigo-400" />
         </motion.div>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-xl font-bold text-white">
           Shop created!
         </h2>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-sm text-white/40">
           Redirecting to your dashboard&hellip;
         </p>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Set up your shop
-        </h1>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Tell us about your business to get started
-        </p>
-      </div>
+    <div className="relative w-full max-w-2xl mx-auto overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-10 shadow-2xl backdrop-blur-xl">
+      {/* Decorative grid pattern */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
 
-      {/* Progress bar */}
-      <div className="mb-8">
-        <div className="mb-3 flex items-center justify-between text-xs text-gray-400 dark:text-gray-500">
-          <span>
-            Step {step + 1} of {TOTAL_STEPS}
-          </span>
-          <span>{Math.round(((step + 1) / TOTAL_STEPS) * 100)}%</span>
+      {/* Decorative corner accent */}
+      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-indigo-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-purple-500/10 blur-3xl" />
+
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-bold text-white">
+            Set up your shop
+          </h1>
+          <p className="mt-1 text-sm text-white/40">
+            Tell us about your business to get started
+          </p>
         </div>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-          <motion.div
-            className="h-full rounded-full bg-blue-600"
-            initial={false}
-            animate={{
-              width: `${((step + 1) / TOTAL_STEPS) * 100}%`,
-            }}
-            transition={{ duration: 0.4, ease: "easeInOut" as const }}
-          />
-        </div>
-      </div>
 
-      {/* Step indicators */}
-      <div className="mb-8 flex items-center justify-between">
-        {STEP_LABELS.map((label, i) => {
-          const Icon = STEP_ICONS[i];
-          return (
-            <div key={label} className="flex items-center gap-2">
-              <span
-                className={`flex h-9 w-9 items-center justify-center rounded-full text-sm font-medium transition-all duration-300 ${
-                  i < step
-                    ? "bg-green-500 text-white"
-                    : i === step
-                      ? "bg-blue-600 text-white shadow-md shadow-blue-600/25"
-                      : "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400"
-                }`}
-              >
-                {i < step ? (
-                  <CheckCircle className="h-4 w-4" />
-                ) : (
-                  <Icon className="h-4 w-4" />
-                )}
-              </span>
-              <span
-                className={`text-sm hidden sm:inline transition-colors ${
-                  i === step
-                    ? "font-medium text-gray-900 dark:text-white"
-                    : "text-gray-400 dark:text-gray-500"
-                }`}
-              >
-                {label}
-              </span>
-              {i < STEP_LABELS.length - 1 && (
-                <div
-                  className={`mx-1 h-px w-6 transition-colors sm:w-8 ${
-                    i < step
-                      ? "bg-green-500"
-                      : "bg-gray-200 dark:bg-gray-700"
-                  }`}
-                />
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {serverError && (
-        <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/30 dark:text-red-400">
-          {serverError}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="relative overflow-hidden" style={{ minHeight: 200 }}>
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={step}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.25, ease: "easeInOut" as const }}
-              className="space-y-5"
-            >
-              {step === 0 && (
-                <>
-                  <Input
-                    label="Shop Name"
-                    placeholder="Acme Corp"
-                    {...register("name", {
-                      onChange: handleNameChange,
-                    })}
-                    error={errors.name?.message}
-                  />
-                  {errors.slug && (
-                    <p className="text-xs text-red-500">
-                      {errors.slug.message}
-                    </p>
-                  )}
-                  <Input
-                    label="Business Type"
-                    placeholder="Retail, Wholesale, E-commerce..."
-                    {...register("businessType")}
-                    error={errors.businessType?.message}
-                  />
-                </>
-              )}
-
-              {step === 1 && (
-                <>
-                  <Input
-                    label="Phone Number"
-                    type="tel"
-                    placeholder="+1 (555) 123-4567"
-                    {...register("phone")}
-                    error={errors.phone?.message}
-                  />
-                  <Input
-                    label="Business Email"
-                    type="email"
-                    placeholder="contact@acme.com"
-                    {...register("email")}
-                    error={errors.email?.message}
-                  />
-                </>
-              )}
-
-              {step === 2 && (
-                <>
-                  <Textarea
-                    label="Address"
-                    placeholder="123 Main St, City, Country"
-                    rows={3}
-                    {...register("address")}
-                    error={errors.address?.message}
-                  />
-                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                    <Select
-                      label="Currency"
-                      options={CURRENCY_OPTIONS.map((c) => ({
-                        value: c.value,
-                        label: c.label,
-                      }))}
-                      {...register("currency")}
-                      error={errors.currency?.message}
-                    />
-                    <Select
-                      label="Timezone"
-                      options={[
-                        { value: "", label: "Select timezone" },
-                        ...TIMEZONE_OPTIONS,
-                      ]}
-                      {...register("timezone")}
-                      error={errors.timezone?.message}
+        {/* Step pipeline */}
+        <div className="mb-8 flex items-center justify-between px-2">
+          {STEP_LABELS.map((label, i) => {
+            const Icon = STEP_ICONS[i];
+            const isCompleted = i < step;
+            const isCurrent = i === step;
+            return (
+              <div key={`step-${i}`} className="flex items-center">
+                <div className="flex flex-col items-center">
+                  <motion.div
+                    initial={false}
+                    animate={{
+                      borderColor: isCompleted || isCurrent ? "rgba(99,102,241,1)" : "rgba(255,255,255,0.1)",
+                      backgroundColor: isCompleted
+                        ? "rgba(99,102,241,0.15)"
+                        : isCurrent
+                          ? "rgba(99,102,241,1)"
+                          : "rgba(255,255,255,0.03)",
+                      boxShadow: isCompleted
+                        ? "0 0 12px rgba(99,102,241,0.25)"
+                        : isCurrent
+                          ? "0 0 20px rgba(99,102,241,0.35)"
+                          : "0 0 0px rgba(99,102,241,0)",
+                    }}
+                    transition={{ duration: 0.4 }}
+                    className="flex h-10 w-10 items-center justify-center rounded-full border-2"
+                  >
+                    {isCompleted ? (
+                      <CheckCircle className="h-4 w-4 text-indigo-400" />
+                    ) : (
+                      <Icon className={`h-4 w-4 ${isCurrent ? "text-white" : "text-white/30"}`} />
+                    )}
+                  </motion.div>
+                  <span
+                    className={`mt-2 text-xs hidden sm:block transition-colors duration-300 ${
+                      isCurrent ? "text-white font-medium" : isCompleted ? "text-indigo-300/60" : "text-white/20"
+                    }`}
+                  >
+                    {label}
+                  </span>
+                </div>
+                {i < STEP_LABELS.length - 1 && (
+                  <div className="relative mx-2 flex items-center sm:mx-3">
+                    <div className="h-px w-8 sm:w-16 bg-white/10" />
+                    <motion.div
+                      initial={false}
+                      animate={{
+                        scaleX: isCompleted ? 1 : 0,
+                      }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="absolute inset-0 h-px w-8 sm:w-16 origin-left bg-indigo-500"
                     />
                   </div>
-                </>
-              )}
-            </motion.div>
-          </AnimatePresence>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Navigation */}
-        <div className="mt-6 flex gap-3">
-          {step > 0 && (
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={goBack}
-              className="flex-1"
-            >
-              <ArrowLeft className="mr-1.5 h-4 w-4" />
-              Back
-            </Button>
-          )}
-
-          {step < TOTAL_STEPS - 1 ? (
-            <Button
-              type="button"
-              onClick={goNext}
-              disabled={!stepValid}
-              className="flex-1"
-            >
-              Next
-              <ArrowRight className="ml-1.5 h-4 w-4" />
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              loading={isSubmitting}
-              disabled={!stepValid}
-              className="flex-1"
-            >
-              Create Shop
-            </Button>
-          )}
+        {/* Progress bar */}
+        <div className="mb-8">
+          <div className="mb-2 flex items-center justify-between text-xs text-white/30">
+            <span>
+              Step {step + 1} of {TOTAL_STEPS}
+            </span>
+            <span>{Math.round(((step + 1) / TOTAL_STEPS) * 100)}%</span>
+          </div>
+          <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+              initial={false}
+              animate={{
+                width: `${((step + 1) / TOTAL_STEPS) * 100}%`,
+              }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            />
+          </div>
         </div>
-      </form>
 
-      {onSkip && (
-        <button
-          type="button"
-          onClick={onSkip}
-          className="mt-4 w-full py-2 text-sm text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
-        >
-          Skip for now
-        </button>
-      )}
-    </Card>
+        {/* Server error */}
+        {serverError && (
+          <div className="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 p-3 text-sm text-red-300 backdrop-blur-sm">
+            {serverError}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="relative overflow-hidden" style={{ minHeight: 200 }}>
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={step}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="space-y-5"
+              >
+                {step === 0 && (
+                  <>
+                    <Input
+                      label="Shop Name"
+                      placeholder="Acme Corp"
+                      {...register("name", {
+                        onChange: handleNameChange,
+                      })}
+                      error={errors.name?.message}
+                    />
+                    {errors.slug && (
+                      <p className="text-xs text-red-400">
+                        {errors.slug.message}
+                      </p>
+                    )}
+                    <Input
+                      label="Business Type"
+                      placeholder="Retail, Wholesale, E-commerce..."
+                      {...register("businessType")}
+                      error={errors.businessType?.message}
+                    />
+                  </>
+                )}
+
+                {step === 1 && (
+                  <>
+                    <Input
+                      label="Phone Number"
+                      type="tel"
+                      placeholder="+1 (555) 123-4567"
+                      {...register("phone")}
+                      error={errors.phone?.message}
+                    />
+                    <Input
+                      label="Business Email"
+                      type="email"
+                      placeholder="contact@acme.com"
+                      {...register("email")}
+                      error={errors.email?.message}
+                    />
+                  </>
+                )}
+
+                {step === 2 && (
+                  <>
+                    <Textarea
+                      label="Address"
+                      placeholder="123 Main St, City, Country"
+                      rows={3}
+                      {...register("address")}
+                      error={errors.address?.message}
+                    />
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                      <Select
+                        label="Currency"
+                        options={CURRENCY_OPTIONS.map((c) => ({
+                          value: c.value,
+                          label: c.label,
+                        }))}
+                        {...register("currency")}
+                        error={errors.currency?.message}
+                      />
+                      <Select
+                        label="Timezone"
+                        options={[
+                          { value: "", label: "Select timezone" },
+                          ...TIMEZONE_OPTIONS,
+                        ]}
+                        {...register("timezone")}
+                        error={errors.timezone?.message}
+                      />
+                    </div>
+                  </>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Navigation */}
+          <div className="mt-6 flex gap-3">
+            {step > 0 && (
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={goBack}
+                className="flex-1"
+              >
+                <ArrowLeft className="mr-1.5 h-4 w-4" />
+                Back
+              </Button>
+            )}
+
+            {step < TOTAL_STEPS - 1 ? (
+              <Button
+                type="button"
+                onClick={goNext}
+                disabled={!stepValid}
+                className="flex-1"
+              >
+                Next
+                <ArrowRight className="ml-1.5 h-4 w-4" />
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                loading={isSubmitting}
+                disabled={!stepValid}
+                className="flex-1"
+              >
+                Create Shop
+              </Button>
+            )}
+          </div>
+        </form>
+
+        {onSkip && (
+          <button
+            type="button"
+            onClick={onSkip}
+            className="mt-4 w-full py-2 text-sm text-white/20 transition-colors hover:text-white/50"
+          >
+            Skip for now
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
