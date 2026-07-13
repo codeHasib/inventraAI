@@ -75,17 +75,17 @@ export default function ExpenseForm({ onSubmit, onCancel, loading }: ExpenseForm
         <div className="space-y-1.5">
           <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Category <span className="text-red-500">*</span></label>
           <select value={category} onChange={(e) => { setCategory(e.target.value); setErrors((p) => { const n = { ...p }; delete n.category; return n; }); }}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 ${errors.category ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`}>
-            <option value="">Select category</option>
-            {EXPENSE_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-950 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-zinc-900 dark:text-zinc-50 dark:border-white/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${errors.category ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`}>
+            <option value="" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Select category</option>
+            {EXPENSE_CATEGORIES.map((c) => <option key={c} value={c} className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">{c}</option>)}
           </select>
           {errors.category && <p className="text-xs text-red-500">{errors.category}</p>}
         </div>
         <div className="space-y-1.5">
           <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Payment Method</label>
           <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100">
-            <option value="CASH">Cash</option><option value="CARD">Card</option><option value="MOBILE_MONEY">Mobile Money</option><option value="BANK_TRANSFER">Bank Transfer</option>
+            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-950 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20">
+            <option value="CASH" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Cash</option><option value="CARD" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Card</option><option value="MOBILE_MONEY" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Mobile Money</option><option value="BANK_TRANSFER" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Bank Transfer</option>
           </select>
         </div>
       </div>

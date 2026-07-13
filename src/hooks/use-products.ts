@@ -54,10 +54,12 @@ export function useProducts(page = 1, limit = 20) {
       toast.success("Product created");
       await fetchProducts();
       return res?.data as Product;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to create product";
+    } catch (error: any) {
+      const serverMessage = error?.response?.data?.message;
+      const msg = serverMessage || error?.message || "Failed to create product";
+      console.error("Product Creation Error Details:", error?.response?.data || error?.message);
       toast.error(msg);
-      throw err;
+      throw error;
     }
   };
 
@@ -67,10 +69,12 @@ export function useProducts(page = 1, limit = 20) {
       toast.success("Product updated");
       await fetchProducts();
       return res?.data as Product;
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Failed to update product";
+    } catch (error: any) {
+      const serverMessage = error?.response?.data?.message;
+      const msg = serverMessage || error?.message || "Failed to update product";
+      console.error("Product Update Error Details:", error?.response?.data || error?.message);
       toast.error(msg);
-      throw err;
+      throw error;
     }
   };
 

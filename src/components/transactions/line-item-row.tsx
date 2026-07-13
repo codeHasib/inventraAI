@@ -37,11 +37,11 @@ export default function LineItemRow({
         <select
           value={item.productId}
           onChange={(e) => onChange(index, "productId", e.target.value)}
-          className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400"
+          className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-950 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20"
         >
-          <option value="">Select product</option>
+          <option value="" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Select product</option>
           {products.map((p) => (
-            <option key={p._id} value={p._id}>
+            <option key={p._id} value={p._id} className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">
               {p.name} ({p.sku})
             </option>
           ))}

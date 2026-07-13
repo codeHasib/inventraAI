@@ -150,12 +150,12 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-zinc-200/80 bg-white shadow-xl dark:border-white/[0.08] dark:bg-zinc-900/95">
-                <div className="border-b border-zinc-200/80 px-4 py-3 dark:border-white/[0.08]">
-                  <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+              <div className="md:absolute md:right-0 md:top-full md:mt-2 md:w-48 md:block z-50 bg-zinc-900 border border-white/10 rounded-xl p-2 shadow-xl">
+                <div className="border-b border-white/10 px-4 py-3">
+                  <p className="text-sm font-medium text-zinc-100">
                     {userName}
                   </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  <p className="text-xs text-zinc-400">
                     {user?.email ?? ""}
                   </p>
                 </div>
@@ -165,7 +165,7 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
                       setDropdownOpen(false);
                       router.push("/dashboard/settings");
                     }}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-white/5"
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:bg-white/5"
                   >
                     <User className="h-4 w-4" />
                     Profile
@@ -175,16 +175,16 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
                       setDropdownOpen(false);
                       router.push("/dashboard/settings");
                     }}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-zinc-700 transition-colors hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-white/5"
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-zinc-300 transition-colors hover:bg-white/5"
                   >
                     <Settings className="h-4 w-4" />
                     Settings
                   </button>
                 </div>
-                <div className="border-t border-zinc-200/80 dark:border-white/[0.08]">
+                <div className="border-t border-white/10">
                   <button
                     onClick={handleSignOut}
-                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-500 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-500/10"
+                    className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-400 transition-colors hover:bg-red-500/10"
                   >
                     <LogOut className="h-4 w-4" />
                     Sign Out

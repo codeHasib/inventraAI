@@ -111,15 +111,15 @@ export default function ProductForm({
           <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-950 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-zinc-900 dark:text-zinc-50 dark:border-white/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
               errors.categoryId
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
                 : "border-zinc-200 dark:border-white/10"
             }`}
           >
-            <option value="">Select a category</option>
+            <option value="" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Select a category</option>
             {categories.map((c) => (
-              <option key={c._id} value={c._id}>{c.name}</option>
+              <option key={c._id} value={c._id} className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">{c.name}</option>
             ))}
           </select>
           {errors.categoryId && <p className="text-xs text-red-500">{errors.categoryId}</p>}
@@ -132,15 +132,15 @@ export default function ProductForm({
           <select
             value={supplierId}
             onChange={(e) => setSupplierId(e.target.value)}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-950 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-zinc-900 dark:text-zinc-50 dark:border-white/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
               errors.supplierId
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
                 : "border-zinc-200 dark:border-white/10"
             }`}
           >
-            <option value="">Select a supplier</option>
+            <option value="" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Select a supplier</option>
             {suppliers.map((s) => (
-              <option key={s._id} value={s._id}>{s.company || s.name}</option>
+              <option key={s._id} value={s._id} className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">{s.company || s.name}</option>
             ))}
           </select>
           {errors.supplierId && <p className="text-xs text-red-500">{errors.supplierId}</p>}
@@ -150,7 +150,7 @@ export default function ProductForm({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Input
           label="Brand"
-          placeholder="Optional brand name"
+          placeholder="Brand name"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
         />

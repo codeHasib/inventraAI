@@ -78,17 +78,17 @@ export default function PurchaseForm({ products, suppliers, onSubmit, onCancel, 
         <div className="space-y-1.5">
           <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Supplier <span className="text-red-500">*</span></label>
           <select value={supplierId} onChange={(e) => { setSupplierId(e.target.value); setErrors((p) => { const n = { ...p }; delete n.supplierId; return n; }); }}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400 ${errors.supplierId ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`}>
-            <option value="">Select supplier</option>
-            {suppliers.map((s) => <option key={s._id} value={s._id}>{s.company || s.name}</option>)}
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-950 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-zinc-900 dark:text-zinc-50 dark:border-white/10 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${errors.supplierId ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`}>
+            <option value="" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Select supplier</option>
+            {suppliers.map((s) => <option key={s._id} value={s._id} className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">{s.company || s.name}</option>)}
           </select>
           {errors.supplierId && <p className="text-xs text-red-500">{errors.supplierId}</p>}
         </div>
         <div className="space-y-1.5">
           <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Payment Method</label>
           <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100">
-            <option value="CASH">Cash</option><option value="CARD">Card</option><option value="MOBILE_MONEY">Mobile Money</option><option value="BANK_TRANSFER">Bank Transfer</option>
+            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-950 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20">
+            <option value="CASH" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Cash</option><option value="CARD" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Card</option><option value="MOBILE_MONEY" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Mobile Money</option><option value="BANK_TRANSFER" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Bank Transfer</option>
           </select>
         </div>
       </div>
@@ -96,8 +96,8 @@ export default function PurchaseForm({ products, suppliers, onSubmit, onCancel, 
         <div className="space-y-1.5">
           <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Payment Status</label>
           <select value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value as PaymentStatus)}
-            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100">
-            <option value="PENDING">Pending</option><option value="PAID">Paid</option><option value="PARTIAL">Partial</option>
+            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-950 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-50 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20">
+            <option value="PENDING" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Pending</option><option value="PAID" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Paid</option><option value="PARTIAL" className="bg-white text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">Partial</option>
           </select>
         </div>
         <div className="space-y-1.5">

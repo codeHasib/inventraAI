@@ -12,7 +12,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200/60 bg-gray-50/80 backdrop-blur-2xl transition-colors duration-300 dark:border-white/5 dark:bg-[#050510]/60">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200/60 bg-gray-50/80 backdrop-blur-md transition-all duration-300 dark:border-white/5 dark:bg-slate-950/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="cursor-pointer" onClick={() => router.push("/")}>
           <BrandLogo size="sm" />
