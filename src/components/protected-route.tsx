@@ -43,7 +43,7 @@ export default function ProtectedRoute({
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
           console.log(`AUTH_STATE_DEBUG: [ProtectedRoute] attempt ${attempt + 1}/${MAX_RETRIES + 1}, calling authClient.getSession()…`);
-          console.log("AUTH_STATE_DEBUG: [ProtectedRoute] authClient.baseURL:", authClient.baseURL);
+          console.log("AUTH_STATE_DEBUG: [ProtectedRoute] NEXT_PUBLIC_BACKEND_URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
           const { data } = await authClient.getSession();
           if (cancelled) return;
 

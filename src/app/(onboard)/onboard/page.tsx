@@ -35,7 +35,7 @@ export default function OnboardPage() {
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
           console.log(`AUTH_STATE_DEBUG: [OnboardPage] attempt ${attempt + 1}/${MAX_RETRIES + 1}, calling authClient.getSession()…`);
-          console.log("AUTH_STATE_DEBUG: [OnboardPage] authClient.baseURL:", authClient.baseURL);
+          console.log("AUTH_STATE_DEBUG: [OnboardPage] NEXT_PUBLIC_BACKEND_URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
           const { data: session } = await authClient.getSession();
           if (cancelled) return;
 

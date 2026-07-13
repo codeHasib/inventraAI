@@ -65,7 +65,7 @@ export default function LandingPage() {
     async function check() {
       try {
         console.log("AUTH_STATE_DEBUG: [LandingPage] checking session…");
-        console.log("AUTH_STATE_DEBUG: [LandingPage] authClient.baseURL:", authClient.baseURL);
+        console.log("AUTH_STATE_DEBUG: [LandingPage] NEXT_PUBLIC_BACKEND_URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
         const { data: session } = await authClient.getSession();
         console.log("AUTH_STATE_DEBUG: [LandingPage] session:", session?.user ? { id: session.user.id, email: session.user.email } : null);
         if (!cancelled && session?.user) {
