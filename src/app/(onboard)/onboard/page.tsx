@@ -62,7 +62,7 @@ export default function OnboardPage() {
         currency: "USD",
         timezone: "UTC",
       });
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     } catch (error: any) {
       const detail = error.response?.data;
       console.error("Backend Rejection Details:", detail || error.message);
