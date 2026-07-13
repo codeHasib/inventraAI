@@ -47,7 +47,9 @@ export default function OnboardPage() {
     setSkipLoading(true);
     setSkipError("");
 
-    const slug = `default-shop-${user.id.slice(0, 8)}-${Date.now().toString(36)}`;
+    const timestamp = Date.now().toString(36);
+    const random = Math.random().toString(36).slice(2, 8);
+    const slug = `default-shop-${timestamp}-${random}`;
 
     try {
       await api.post("/shops/onboard", {
@@ -55,15 +57,18 @@ export default function OnboardPage() {
         slug,
         businessType: "General",
         phone: "+10000000000",
-        email: user.email,
+        email: user.email || "skip@inventraai.com",
         address: "Not specified",
         currency: "USD",
         timezone: "UTC",
       });
       router.push("/dashboard");
-    } catch (error) {
-      console.error("Failed to apply skip initialization:", error);
-      setSkipError("Could not initialize your workspace. Please try again.");
+    } catch (error: any) {
+      const detail = error.response?.data;
+      console.error("Backend Rejection Details:", detail || error.message);
+      const msg =
+        detail?.message || detail?.error || error.message || "Skip failed";
+      setSkipError(msg);
       setSkipLoading(false);
     }
   };
