@@ -59,28 +59,32 @@ function BentoCard({
 
 export default function LandingPage() {
   const router = useRouter();
+  const { data, isPending } = authClient.useSession();
+
+  const user = data?.user;
 
   useEffect(() => {
-    let cancelled = false;
-    async function check() {
-      try {
-        console.log("AUTH_STATE_DEBUG: [LandingPage] checking session…");
-        console.log("AUTH_STATE_DEBUG: [LandingPage] NEXT_PUBLIC_BACKEND_URL:", process.env.NEXT_PUBLIC_BACKEND_URL);
-        const { data: session } = await authClient.getSession();
-        console.log("AUTH_STATE_DEBUG: [LandingPage] session:", session?.user ? { id: session.user.id, email: session.user.email } : null);
-        if (!cancelled && session?.user) {
-          console.log("AUTH_STATE_DEBUG: [LandingPage] user exists → redirecting to /dashboard");
-          router.replace("/dashboard");
-        }
-      } catch (err) {
-        console.error("AUTH_STATE_DEBUG: [LandingPage] getSession threw:", err);
-      }
+    if (isPending) return;
+
+    if (user) {
+      router.replace("/dashboard");
     }
-    check();
-    return () => {
-      cancelled = true;
-    };
-  }, [router]);
+  }, [isPending, user, router]);
+
+  if (isPending) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600 dark:border-gray-700 dark:border-t-blue-500" />
+          <p className="text-sm text-gray-400 dark:text-gray-500">
+            Loading&hellip;
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (user) return null;
 
   return (
     <div className="min-h-screen bg-background">
