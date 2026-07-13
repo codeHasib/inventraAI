@@ -56,11 +56,9 @@ const slideVariants = {
   }),
 };
 
-interface OnboardingFormProps {
-  onSkip?: () => void;
-}
+interface OnboardingFormProps {}
 
-export default function OnboardingForm({ onSkip }: OnboardingFormProps) {
+export default function OnboardingForm({}: OnboardingFormProps) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -418,16 +416,6 @@ export default function OnboardingForm({ onSkip }: OnboardingFormProps) {
             )}
           </div>
         </form>
-
-        {onSkip && (
-          <button
-            type="button"
-            onClick={onSkip}
-            className="mt-4 w-full py-2 text-sm text-white/20 transition-colors hover:text-white/50"
-          >
-            Skip for now
-          </button>
-        )}
       </div>
     </div>
   );

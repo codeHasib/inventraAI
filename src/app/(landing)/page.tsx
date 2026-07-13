@@ -82,13 +82,19 @@ export default function LandingPage() {
   const { data, isPending } = authClient.useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const user = data?.user;
+  const user = data?.user as
+    | { id: string; email: string; name: string; shopId?: string | null }
+    | undefined;
 
   useEffect(() => {
     if (isPending) return;
 
     if (user) {
-      router.replace("/dashboard");
+      if (user.shopId) {
+        router.replace("/dashboard");
+      } else {
+        router.replace("/onboard");
+      }
     }
   }, [isPending, user, router]);
 

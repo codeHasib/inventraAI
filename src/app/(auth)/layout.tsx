@@ -8,23 +8,23 @@ export default function AuthLayout({
 }) {
   return (
     <div className="w-full min-h-screen overflow-x-hidden flex flex-col bg-gray-50 transition-colors duration-300 dark:bg-[#050510]">
-      {/* Background gradients */}
-      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -left-[20%] top-[10%] h-[600px] w-[600px] rounded-full bg-indigo-300/30 blur-[120px] dark:bg-indigo-600/20" />
-        <div className="absolute right-[10%] top-[30%] h-[500px] w-[500px] rounded-full bg-purple-300/20 blur-[120px] dark:bg-purple-600/15" />
-        <div className="absolute bottom-[10%] left-[30%] h-[400px] w-[400px] rounded-full bg-blue-300/15 blur-[120px] dark:bg-blue-600/10" />
-      </div>
-
       <Navbar />
 
-      <main className="relative z-10 flex w-full flex-1 flex-col md:flex-row">
-        {/* Side Panel A — Live Inventory Tracker (desktop only) */}
-        <div className="hidden w-full items-center justify-center p-8 md:flex md:w-1/2 lg:p-12">
-          <InventoryMockup />
+      <main className="flex-1 flex flex-col md:flex-row">
+        {/* Left Panel — Immersive Hero Visual (desktop only) */}
+        <div className="hidden md:flex md:w-1/2 min-h-screen bg-slate-950 border-r border-white/5 relative items-center justify-center p-12 overflow-hidden">
+          {/* Subtle dark grid overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
+          {/* Deep indigo ambient glow orb */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-indigo-600/15 blur-[120px]" />
+          {/* Scaled-up mockup */}
+          <div className="relative z-10 w-full max-w-lg scale-110">
+            <InventoryMockup />
+          </div>
         </div>
 
-        {/* Side Panel B — Auth Forms */}
-        <div className="flex w-full items-center justify-center px-4 py-12 md:w-1/2">
+        {/* Right Panel — Centered Form Container */}
+        <div className="w-full md:w-1/2 min-h-screen flex items-center justify-center p-6 sm:p-12 bg-zinc-950">
           {children}
         </div>
       </main>
