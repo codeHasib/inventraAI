@@ -64,12 +64,16 @@ export default function LandingPage() {
     let cancelled = false;
     async function check() {
       try {
+        console.log("AUTH_STATE_DEBUG: [LandingPage] checking session…");
+        console.log("AUTH_STATE_DEBUG: [LandingPage] authClient.baseURL:", authClient.baseURL);
         const { data: session } = await authClient.getSession();
+        console.log("AUTH_STATE_DEBUG: [LandingPage] session:", session?.user ? { id: session.user.id, email: session.user.email } : null);
         if (!cancelled && session?.user) {
+          console.log("AUTH_STATE_DEBUG: [LandingPage] user exists → redirecting to /dashboard");
           router.replace("/dashboard");
         }
-      } catch {
-        // not logged in
+      } catch (err) {
+        console.error("AUTH_STATE_DEBUG: [LandingPage] getSession threw:", err);
       }
     }
     check();

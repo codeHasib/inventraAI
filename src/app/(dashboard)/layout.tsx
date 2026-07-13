@@ -37,24 +37,33 @@ export default function DashboardGuard({
     let cancelled = false;
 
     async function checkSession() {
+      console.log("AUTH_STATE_DEBUG: [DashboardGuard] checkSession() called, loading:", loading, "session:", session);
+
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
+          console.log(`AUTH_STATE_DEBUG: [DashboardGuard] attempt ${attempt + 1}/${MAX_RETRIES + 1}, calling authClient.getSession()…`);
+          console.log("AUTH_STATE_DEBUG: [DashboardGuard] authClient.baseURL:", authClient.baseURL);
           const { data } = await authClient.getSession();
           if (cancelled) return;
 
           const user = data?.user as SessionUser | undefined;
+          console.log("AUTH_STATE_DEBUG: [DashboardGuard] getSession resolved → user:", user ? { id: user.id, email: user.email, shopId: user.shopId } : null);
 
           if (!user) {
             if (attempt < MAX_RETRIES) {
+              console.log(`AUTH_STATE_DEBUG: [DashboardGuard] no user, retrying in ${RETRY_DELAY_MS}ms…`);
               await delay(RETRY_DELAY_MS);
               continue;
             }
+            console.log("AUTH_STATE_DEBUG: [DashboardGuard] no user after all retries, will redirect.");
             return;
           }
 
           setSession(user);
+          console.log("AUTH_STATE_DEBUG: [DashboardGuard] session set, user:", user.email);
           return;
-        } catch {
+        } catch (err) {
+          console.error("AUTH_STATE_DEBUG: [DashboardGuard] getSession threw:", err);
           if (attempt < MAX_RETRIES) {
             await delay(RETRY_DELAY_MS);
           }
@@ -63,7 +72,10 @@ export default function DashboardGuard({
     }
 
     checkSession().finally(() => {
-      if (!cancelled) setLoading(false);
+      if (!cancelled) {
+        console.log("AUTH_STATE_DEBUG: [DashboardGuard] checkSession done → setLoading(false)");
+        setLoading(false);
+      }
     });
 
     return () => {
@@ -72,9 +84,11 @@ export default function DashboardGuard({
   }, []);
 
   useEffect(() => {
+    console.log("AUTH_STATE_DEBUG: [DashboardGuard] redirect-effect → loading:", loading, "session:", session ? session.email : null);
     if (loading) return;
 
     if (!session) {
+      console.log("AUTH_STATE_DEBUG: [DashboardGuard] session is null → redirecting to /");
       router.replace("/");
       return;
     }
@@ -84,6 +98,7 @@ export default function DashboardGuard({
       localStorage.getItem(SKIP_KEY) === "true";
 
     if (!session.shopId && !skipped) {
+      console.log("AUTH_STATE_DEBUG: [DashboardGuard] no shopId, not skipped → redirecting to /onboard");
       router.replace("/onboard");
     }
   }, [loading, session, router]);

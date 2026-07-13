@@ -34,30 +34,36 @@ export default function OnboardPage() {
 
       for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
         try {
+          console.log(`AUTH_STATE_DEBUG: [OnboardPage] attempt ${attempt + 1}/${MAX_RETRIES + 1}, calling authClient.getSession()…`);
+          console.log("AUTH_STATE_DEBUG: [OnboardPage] authClient.baseURL:", authClient.baseURL);
           const { data: session } = await authClient.getSession();
           if (cancelled) return;
 
           const user = session?.user as SessionUser | undefined;
+          console.log("AUTH_STATE_DEBUG: [OnboardPage] user:", user ? { id: user.id, email: user.email, shopId: user.shopId } : null);
 
           if (!user) {
             if (attempt < MAX_RETRIES) {
               await delay(RETRY_DELAY_MS);
               continue;
             }
+            console.log("AUTH_STATE_DEBUG: [OnboardPage] no user after all retries → redirecting to /");
             router.replace("/");
             return;
           }
 
-          // Already has a shop — skip onboarding
           if (user.shopId) {
+            console.log("AUTH_STATE_DEBUG: [OnboardPage] user has shopId → redirecting to /dashboard");
             router.replace("/dashboard");
             return;
           }
 
           setAuthorized(true);
+          console.log("AUTH_STATE_DEBUG: [OnboardPage] authorized set to true");
           return;
         } catch (err) {
           lastError = err;
+          console.error("AUTH_STATE_DEBUG: [OnboardPage] getSession threw:", err);
           if (attempt < MAX_RETRIES) {
             await delay(RETRY_DELAY_MS);
           }
@@ -65,6 +71,7 @@ export default function OnboardPage() {
       }
 
       if (!cancelled && lastError) {
+        console.log("AUTH_STATE_DEBUG: [OnboardPage] lastError, redirecting to /");
         router.replace("/");
       }
     }
