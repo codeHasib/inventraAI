@@ -6,13 +6,13 @@ interface BadgeProps {
 
 const variants = {
   default:
-    "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
+    "bg-zinc-100 text-zinc-700 dark:bg-white/10 dark:text-white/60",
   danger:
-    "bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+    "bg-red-50 text-red-700 dark:bg-red-500/15 dark:text-red-400",
   warning:
-    "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+    "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
   success:
-    "bg-green-50 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+    "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400",
 };
 
 export default function Badge({

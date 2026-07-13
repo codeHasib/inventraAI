@@ -9,10 +9,10 @@ import MobileSidebar from "@/components/dashboard/mobile-sidebar";
 
 function LoadingSpinner() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-slate-950">
       <div className="flex flex-col items-center gap-3">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600 dark:border-gray-700 dark:border-t-blue-500" />
-        <p className="text-sm text-gray-400 dark:text-gray-500">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-zinc-200 border-t-emerald-500 dark:border-white/10 dark:border-t-emerald-500" />
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
           Loading&hellip;
         </p>
       </div>
@@ -51,7 +51,7 @@ export default function DashboardGuard({
   if (!user) return null;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50 dark:bg-gray-950">
+    <div className="flex h-screen overflow-hidden bg-zinc-50 transition-all duration-300 ease-in-out dark:bg-slate-950">
       {/* Desktop sidebar */}
       <Sidebar />
 
@@ -68,7 +68,7 @@ export default function DashboardGuard({
           onToggleMobile={() => setMobileOpen((o) => !o)}
         />
 
-        <main className="flex-1 overflow-y-auto">
+        <main className="w-full max-w-[1600px] mx-auto flex-1 overflow-y-auto overflow-x-hidden p-4 pt-4 sm:p-6 md:pt-8 lg:p-8">
           {children}
         </main>
       </div>

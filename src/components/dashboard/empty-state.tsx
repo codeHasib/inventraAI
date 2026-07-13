@@ -23,13 +23,13 @@ export default function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800">
-        <Icon className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-zinc-100 dark:bg-white/5">
+        <Icon className="h-8 w-8 text-zinc-400 dark:text-white/30" />
       </div>
-      <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+      <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
         {heading}
       </h3>
-      <p className="mt-1 max-w-sm text-sm text-slate-500 dark:text-slate-400">
+      <p className="mt-1 max-w-sm text-sm text-zinc-500 dark:text-zinc-400">
         {subtext}
       </p>
       <Button

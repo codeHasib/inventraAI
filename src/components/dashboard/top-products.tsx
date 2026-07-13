@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { RefreshCw, Trophy } from "lucide-react";
 import Card from "@/components/ui/card";
 import Button from "@/components/ui/button";
@@ -23,13 +24,13 @@ export default function TopProducts({
   const products = Array.isArray(rawProducts) ? rawProducts : [];
 
   return (
-    <Card className="flex h-full flex-col p-4">
+    <Card className="flex h-full flex-col p-6">
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
-            <Trophy className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 dark:bg-emerald-500/10">
+            <Trophy className="h-4 w-4 text-emerald-500 dark:text-emerald-400" />
           </div>
-          <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+          <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
             Top Products
           </h3>
         </div>
@@ -48,7 +49,7 @@ export default function TopProducts({
       {loading ? (
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="flex items-center justify-between px-1 py-2">
+            <div key={`top-skeleton-${i}`} className="flex items-center justify-between px-1 py-2">
               <div className="space-y-1.5">
                 <Skeleton className="h-4 w-32" />
                 <Skeleton className="h-3 w-20" />
@@ -58,7 +59,7 @@ export default function TopProducts({
           ))}
         </div>
       ) : error ? (
-        <div className="flex flex-1 items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+        <div className="flex flex-1 items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
           {error}
         </div>
       ) : products.length === 0 ? (
@@ -70,26 +71,28 @@ export default function TopProducts({
           ctaHref="/dashboard/sales"
         />
       ) : (
-        <div className="flex-1 space-y-1">
+        <div className="flex-1 space-y-2">
           {products.map((p, i) => (
-            <div
+            <motion.div
               key={p._id}
-              className="flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+              whileHover={{ x: 4 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              className="flex items-center justify-between gap-3 rounded-xl border-l-2 border-emerald-500/40 bg-zinc-100/50 px-4 py-3 transition-colors hover:bg-zinc-100 dark:bg-white/[0.02] dark:hover:bg-white/[0.05]"
             >
               <div className="flex min-w-0 flex-1 items-center gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-400">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-zinc-200/80 text-xs font-bold text-zinc-600 dark:bg-white/5 dark:text-zinc-400">
                   {i + 1}
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
                     {p.name}
                   </p>
                 </div>
               </div>
-              <span className="shrink-0 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">
+              <span className="shrink-0 text-sm font-semibold tabular-nums text-zinc-900 dark:text-zinc-100">
                 ${(p.revenue ?? 0).toLocaleString()}
               </span>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

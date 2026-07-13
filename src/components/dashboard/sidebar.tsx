@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Package,
@@ -68,14 +69,31 @@ function NavEntry({ item, pathname }: { item: NavItem; pathname: string }) {
   return (
     <Link
       href={item.href}
-      className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-        active
-          ? "bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
-          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
-      }`}
+      className="relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium"
     >
-      <item.icon className="h-[18px] w-[18px] shrink-0" />
-      {item.label}
+      {active && (
+        <motion.div
+          layoutId="activeNav"
+          className="absolute inset-0 rounded-lg bg-emerald-500/10 dark:bg-emerald-500/10"
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        />
+      )}
+      <item.icon
+        className={`relative h-[18px] w-[18px] shrink-0 transition-colors duration-200 ${
+          active
+            ? "text-emerald-500 dark:text-emerald-400"
+            : "text-zinc-400 dark:text-zinc-500"
+        }`}
+      />
+      <span
+        className={`relative transition-colors duration-200 ${
+          active
+            ? "text-zinc-900 dark:text-zinc-100"
+            : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+        }`}
+      >
+        {item.label}
+      </span>
     </Link>
   );
 }
@@ -94,10 +112,10 @@ function NavGroupBlock({
     <div>
       <button
         onClick={() => setOpen((o) => !o)}
-        className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+        className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 ${
           groupActive
-            ? "text-slate-900 dark:text-white"
-            : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+            ? "text-zinc-900 dark:text-zinc-100"
+            : "text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
         }`}
       >
         <span>{group.label}</span>
@@ -122,13 +140,13 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-64 shrink-0 border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 lg:flex lg:flex-col">
+    <aside className="hidden h-screen w-64 shrink-0 flex-col border-r border-zinc-200/80 bg-white transition-all duration-300 ease-in-out md:flex dark:border-white/[0.08] dark:bg-slate-950">
       {/* Brand */}
-      <div className="flex h-16 items-center gap-2.5 border-b border-slate-200 px-6 dark:border-slate-800">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
+      <div className="flex h-16 items-center gap-2.5 border-b border-zinc-200/80 px-6 transition-all duration-300 dark:border-white/[0.08]">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500">
           <Zap className="h-4 w-4 text-white" />
         </div>
-        <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+        <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
           InventraAI
         </span>
       </div>
@@ -152,8 +170,8 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-slate-200 px-6 py-4 dark:border-slate-800">
-        <p className="text-xs text-slate-400 dark:text-slate-500">
+      <div className="border-t border-zinc-200/80 px-6 py-4 transition-all duration-300 dark:border-white/[0.08]">
+        <p className="text-xs text-zinc-400 dark:text-zinc-500">
           InventraAI v0.1.0
         </p>
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   DollarSign,
   TrendingUp,
@@ -17,33 +18,6 @@ interface StatsCardsProps {
   error: string | null;
 }
 
-interface StatCardProps {
-  label: string;
-  value: string;
-  icon: React.ReactNode;
-  iconBg: string;
-}
-
-function StatCard({ label, value, icon, iconBg }: StatCardProps) {
-  return (
-    <Card className="flex items-start justify-between p-5">
-      <div className="space-y-1">
-        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-          {label}
-        </p>
-        <p className="text-2xl font-bold text-gray-900 dark:text-white">
-          {value}
-        </p>
-      </div>
-      <div
-        className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconBg}`}
-      >
-        {icon}
-      </div>
-    </Card>
-  );
-}
-
 const currency = (v?: number) =>
   `$${(v ?? 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
@@ -53,75 +27,154 @@ const CARDS: {
   key: StatKey;
   label: string;
   icon: typeof DollarSign;
-  bg: string;
   iconColor: string;
+  glowColor: string;
   format: (v?: number) => string;
+  primary?: boolean;
 }[] = [
   {
     key: "totalRevenue",
     label: "Total Revenue",
     icon: DollarSign,
-    bg: "bg-blue-50 dark:bg-blue-900/30",
-    iconColor: "text-blue-600 dark:text-blue-400",
+    iconColor: "text-emerald-500 dark:text-emerald-400",
+    glowColor: "bg-emerald-500/10",
     format: currency,
+    primary: true,
   },
   {
     key: "totalSalesCount",
     label: "Total Sales",
     icon: TrendingUp,
-    bg: "bg-emerald-50 dark:bg-emerald-900/30",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
+    iconColor: "text-blue-500 dark:text-blue-400",
+    glowColor: "bg-blue-500/10",
     format: (v) => (v ?? 0).toLocaleString(),
   },
   {
     key: "totalExpenses",
     label: "Total Expenses",
     icon: Receipt,
-    bg: "bg-rose-50 dark:bg-rose-900/30",
-    iconColor: "text-rose-600 dark:text-rose-400",
+    iconColor: "text-red-500 dark:text-red-400",
+    glowColor: "bg-red-500/10",
     format: currency,
   },
   {
     key: "totalPurchases",
     label: "Total Purchases",
     icon: ShoppingCart,
-    bg: "bg-amber-50 dark:bg-amber-900/30",
-    iconColor: "text-amber-600 dark:text-amber-400",
+    iconColor: "text-amber-500 dark:text-amber-400",
+    glowColor: "bg-amber-500/10",
     format: currency,
   },
   {
     key: "totalProducts",
     label: "Total Products",
     icon: Package,
-    bg: "bg-violet-50 dark:bg-violet-900/30",
-    iconColor: "text-violet-600 dark:text-violet-400",
+    iconColor: "text-violet-500 dark:text-violet-400",
+    glowColor: "bg-violet-500/10",
     format: (v) => (v ?? 0).toLocaleString(),
   },
 ];
 
+function StatCard({
+  label,
+  value,
+  icon,
+  iconColor,
+  glowColor,
+  primary,
+}: {
+  label: string;
+  value: string;
+  icon: React.ReactNode;
+  iconColor: string;
+  glowColor: string;
+  primary?: boolean;
+}) {
+  return (
+    <motion.div
+      whileHover={{ y: -6, scale: 1.01 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className={primary ? "md:col-span-2" : ""}
+    >
+      <Card
+        className={`relative overflow-hidden p-6 ${
+          primary
+            ? "shadow-[0_0_25px_rgba(16,185,129,0.08)] dark:shadow-[0_0_25px_rgba(16,185,129,0.15)]"
+            : ""
+        }`}
+      >
+        {/* Gradient wave overlay for primary card */}
+        {primary && (
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <svg
+              className="absolute bottom-0 left-0 w-full opacity-[0.07] dark:opacity-[0.12]"
+              viewBox="0 0 400 80"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <linearGradient id="waveGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="100%" stopColor="#06b6d4" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M0,40 C80,10 160,70 240,35 C320,0 360,50 400,30 L400,80 L0,80 Z"
+                fill="url(#waveGrad)"
+              />
+            </svg>
+          </div>
+        )}
+
+        <div className="relative z-10 flex items-start justify-between">
+          <div className="space-y-1">
+            <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+              {label}
+            </p>
+            <p className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+              {value}
+            </p>
+          </div>
+          <div
+            className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${glowColor}`}
+          >
+            {icon}
+          </div>
+        </div>
+      </Card>
+    </motion.div>
+  );
+}
+
 export default function StatsCards({ data, loading, error }: StatsCardsProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Card key={i} className="space-y-3 p-5">
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-8 w-32" />
-          </Card>
+          <div
+            key={`skeleton-stat-${i}`}
+            className={`${i === 0 ? "md:col-span-2" : ""}`}
+          >
+            <Card className="space-y-3 p-6">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-32" />
+            </Card>
+          </div>
         ))}
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
       {CARDS.map((c) => (
         <StatCard
           key={c.key}
           label={c.label}
           value={data ? c.format(data?.[c.key]) : "\u2014"}
           icon={<c.icon className={`h-5 w-5 ${c.iconColor}`} />}
-          iconBg={c.bg}
+          iconColor={c.iconColor}
+          glowColor={c.glowColor}
+          primary={c.primary}
         />
       ))}
     </div>

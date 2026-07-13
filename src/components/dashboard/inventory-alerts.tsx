@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { RefreshCw, PackageX, AlertTriangle } from "lucide-react";
 import Card from "@/components/ui/card";
 import Badge from "@/components/ui/badge";
@@ -11,25 +12,33 @@ function WarningRow({ item }: { item: { _id: string; name: string; sku: string; 
   const isOut = item.status === "OUT_OF_STOCK";
 
   return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-100 bg-slate-50/50 px-4 py-3 transition-colors hover:bg-slate-100/50 dark:border-slate-800 dark:bg-slate-800/30 dark:hover:bg-slate-800/50">
+    <motion.div
+      whileHover={{ x: 4 }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      className={`flex items-center justify-between gap-3 rounded-xl border-l-2 px-4 py-3 transition-colors ${
+        isOut
+          ? "border-l-red-500/50 bg-red-50/50 hover:bg-red-50 dark:bg-red-500/[0.03] dark:hover:bg-red-500/[0.06]"
+          : "border-l-amber-500/50 bg-amber-50/50 hover:bg-amber-50 dark:bg-amber-500/[0.03] dark:hover:bg-amber-500/[0.06]"
+      }`}
+    >
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+        <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
           {item.name}
         </p>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
           SKU: {item.sku}
           {item.category?.name && ` \u00B7 ${item.category.name}`}
         </p>
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        <span className="text-sm tabular-nums text-slate-500 dark:text-slate-400">
+        <span className="text-sm tabular-nums text-zinc-500 dark:text-zinc-400">
           {item.currentStock}/{item.minimumStock}
         </span>
         <Badge variant={isOut ? "danger" : "warning"}>
           {isOut ? "Out of Stock" : "Low Stock"}
         </Badge>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -37,18 +46,18 @@ export default function InventoryAlerts() {
   const { warnings, loading, error, refetch } = useAlerts();
 
   return (
-    <Card className="p-4">
+    <Card className="p-6">
       <div className="mb-4 flex items-start justify-between">
         <div className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-900/30">
-            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/10 dark:bg-amber-500/10">
+            <AlertTriangle className="h-4 w-4 text-amber-500 dark:text-amber-400" />
           </div>
           <div>
-            <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
               Inventory Alerts
             </h3>
             {!loading && warnings.length > 0 && (
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 {warnings.length} item{warnings.length !== 1 ? "s" : ""} need
                 attention
               </p>
@@ -71,8 +80,8 @@ export default function InventoryAlerts() {
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
-              key={i}
-              className="flex items-center justify-between rounded-lg px-4 py-3"
+              key={`alert-skeleton-${i}`}
+              className="flex items-center justify-between rounded-xl px-4 py-3"
             >
               <div className="space-y-1.5">
                 <Skeleton className="h-4 w-36" />
@@ -83,13 +92,13 @@ export default function InventoryAlerts() {
           ))}
         </div>
       ) : error ? (
-        <div className="flex h-40 items-center justify-center text-sm text-slate-500 dark:text-slate-400">
+        <div className="flex h-40 items-center justify-center text-sm text-zinc-500 dark:text-zinc-400">
           {error}
         </div>
       ) : warnings.length === 0 ? (
         <div className="flex h-40 flex-col items-center justify-center gap-2 text-center">
-          <PackageX className="h-8 w-8 text-slate-300 dark:text-slate-600" />
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <PackageX className="h-8 w-8 text-zinc-300 dark:text-zinc-600" />
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
             All stock levels look good!
           </p>
         </div>
