@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useKnowledge } from "@/hooks/use-knowledge";
 import DocumentManager from "@/components/knowledge/document-manager";
 import AiChat from "@/components/knowledge/ai-chat";
+import { staggerContainer, fadeInUp } from "@/lib/animations";
 import type { ChatMessage } from "@/types/knowledge";
 
 export default function AiKnowledgePage() {
@@ -59,19 +61,24 @@ export default function AiKnowledgePage() {
   );
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col gap-6 p-6">
+    <motion.div
+      className="flex h-[calc(100vh-8rem)] flex-col gap-6 p-4 sm:p-6 md:h-[calc(100vh-4rem)]"
+      variants={staggerContainer}
+      initial="hidden"
+      animate="visible"
+    >
       {/* Header */}
-      <div className="shrink-0 space-y-1">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+      <motion.div className="shrink-0 space-y-1" variants={fadeInUp}>
+        <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 sm:text-2xl">
           AI Knowledge Hub
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400">
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
           Upload documents and ask questions powered by AI.
         </p>
-      </div>
+      </motion.div>
 
       {/* Two-column layout */}
-      <div className="min-h-0 flex-1 grid grid-cols-1 gap-6 lg:grid-cols-[340px_1fr]">
+      <motion.div className="min-h-0 flex-1 grid grid-cols-1 gap-6 lg:grid-cols-[340px_1fr]" variants={fadeInUp}>
         {/* Left sidebar — Document Manager */}
         <div className="min-h-0 lg:overflow-y-auto">
           <DocumentManager
@@ -91,7 +98,7 @@ export default function AiKnowledgePage() {
             loading={chatLoading}
           />
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

@@ -53,53 +53,53 @@ export default function ExpenseForm({ onSubmit, onCancel, loading }: ExpenseForm
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Title <span className="text-red-500">*</span></label>
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Title <span className="text-red-500">*</span></label>
         <input type="text" value={title} onChange={(e) => { setTitle(e.target.value); setErrors((p) => { const n = { ...p }; delete n.title; return n; }); }} placeholder="e.g. Office rent"
-          className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 ${errors.title ? "border-red-500" : "border-gray-300 dark:border-gray-600"}`} />
+          className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 ${errors.title ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`} />
         {errors.title && <p className="text-xs text-red-500">{errors.title}</p>}
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Amount <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Amount <span className="text-red-500">*</span></label>
           <input type="number" min="0.01" step="0.01" value={amount} onChange={(e) => { setAmount(e.target.value); setErrors((p) => { const n = { ...p }; delete n.amount; return n; }); }} placeholder="0.00"
-            className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 ${errors.amount ? "border-red-500" : "border-gray-300 dark:border-gray-600"}`} />
+            className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 ${errors.amount ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`} />
           {errors.amount && <p className="text-xs text-red-500">{errors.amount}</p>}
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Date</label>
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Date</label>
           <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100" />
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Category <span className="text-red-500">*</span></label>
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Category <span className="text-red-500">*</span></label>
           <select value={category} onChange={(e) => { setCategory(e.target.value); setErrors((p) => { const n = { ...p }; delete n.category; return n; }); }}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 ${errors.category ? "border-red-500" : "border-gray-300 dark:border-gray-600"}`}>
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 ${errors.category ? "border-red-500" : "border-zinc-200 dark:border-white/10"}`}>
             <option value="">Select category</option>
             {EXPENSE_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
           {errors.category && <p className="text-xs text-red-500">{errors.category}</p>}
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Payment Method</label>
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Payment Method</label>
           <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-            className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100">
+            className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100">
             <option value="CASH">Cash</option><option value="CARD">Card</option><option value="MOBILE_MONEY">Mobile Money</option><option value="BANK_TRANSFER">Bank Transfer</option>
           </select>
         </div>
       </div>
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Vendor</label>
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Vendor</label>
         <input type="text" value={vendor} onChange={(e) => setVendor(e.target.value)} placeholder="Optional vendor name"
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+          className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100" />
       </div>
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Notes</label>
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Notes</label>
         <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={2} placeholder="Optional notes..."
-          className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+          className="w-full resize-none rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100" />
       </div>
-      <div className="flex justify-end gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+      <div className="flex justify-end gap-3 border-t border-zinc-200/80 pt-4 dark:border-white/[0.08]">
         <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>Cancel</Button>
         <Button type="submit" variant="primary" loading={loading}>Record Expense</Button>
       </div>

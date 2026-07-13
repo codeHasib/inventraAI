@@ -31,30 +31,6 @@ export default function StockAdjustModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const q = isNaN(Number(quantity)) ? 0 : Number(quantity);
-  //   if (q < 0) {
-  //     setError("Quantity must be a non-negative number");
-  //     return;
-  //   }
-  //   if (!product) return;
-  //   setError("");
-  //   setLoading(true);
-  //   try {
-  //     await onAdjust(product._id, {
-  //       quantity: q,
-  //       type,
-  //       reason: reason.trim() || undefined,
-  //     });
-  //     setQuantity("");
-  //     setReason("");
-  //     onClose();
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const q = isNaN(Number(quantity)) ? 0 : Number(quantity);
@@ -104,11 +80,11 @@ export default function StockAdjustModal({
   return (
     <Modal open={open} onClose={handleClose} title="Adjust Stock">
       {product && (
-        <div className="mb-4 rounded-lg bg-slate-50 px-4 py-3 dark:bg-slate-800">
-          <p className="text-sm font-medium text-gray-900 dark:text-white">
+        <div className="mb-4 rounded-lg bg-zinc-50 px-4 py-3 dark:bg-white/5">
+          <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
             {product.name}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
             Current stock:{" "}
             <span className="font-semibold">{product.currentStock}</span>{" "}
             {product.unit}
@@ -117,7 +93,7 @@ export default function StockAdjustModal({
       )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Action
           </label>
           <div className="flex gap-2">
@@ -128,8 +104,8 @@ export default function StockAdjustModal({
                 onClick={() => setType(t)}
                 className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
                   type === t
-                    ? "border-blue-500 bg-blue-50 text-blue-700 dark:border-blue-400 dark:bg-blue-900/30 dark:text-blue-400"
-                    : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800"
+                    ? "border-emerald-500 bg-emerald-50 text-emerald-700 dark:border-emerald-400 dark:bg-emerald-500/10 dark:text-emerald-400"
+                    : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-white/5"
                 }`}
               >
                 {t === "ADD"
@@ -142,7 +118,7 @@ export default function StockAdjustModal({
           </div>
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Quantity
           </label>
           <input
@@ -155,14 +131,14 @@ export default function StockAdjustModal({
             }}
             placeholder="0"
             autoFocus
-            className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 ${
-              error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
+            className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
+              error ? "border-red-500" : "border-zinc-200 dark:border-white/10"
             }`}
           />
           {error && <p className="text-xs text-red-500">{error}</p>}
         </div>
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Reason (optional)
           </label>
           <input
@@ -170,10 +146,10 @@ export default function StockAdjustModal({
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="e.g. Received shipment, Damaged goods"
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
+            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 placeholder-zinc-400 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:placeholder-zinc-500 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20"
           />
         </div>
-        <div className="flex justify-end gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+        <div className="flex justify-end gap-3 border-t border-zinc-200/80 pt-4 dark:border-white/[0.08]">
           <Button
             type="button"
             variant="secondary"

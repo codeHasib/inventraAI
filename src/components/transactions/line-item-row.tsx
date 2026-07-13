@@ -32,12 +32,12 @@ export default function LineItemRow({
   const subtotal = item.quantity * item.price;
 
   return (
-    <div className="flex items-start gap-3 rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+    <div className="flex items-start gap-3 rounded-lg border border-zinc-200/80 p-3 dark:border-white/[0.08]">
       <div className="min-w-0 flex-1 space-y-2">
         <select
           value={item.productId}
           onChange={(e) => onChange(index, "productId", e.target.value)}
-          className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400"
+          className="w-full appearance-none rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400"
         >
           <option value="">Select product</option>
           {products.map((p) => (
@@ -48,14 +48,14 @@ export default function LineItemRow({
         </select>
         <div className="flex gap-2">
           <div className="flex-1">
-            <label className="mb-1 block text-xs text-slate-500 dark:text-slate-400">Qty</label>
+            <label className="mb-1 block text-xs text-zinc-500 dark:text-zinc-400">Qty</label>
             <input
               type="number"
               min="1"
               value={item.quantity}
               onChange={(e) => onChange(index, "quantity", e.target.value)}
-              className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400 ${
-                stockWarning ? "border-red-500" : "border-gray-300 dark:border-gray-600"
+              className={`w-full rounded-lg border bg-white px-3 py-2 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400 ${
+                stockWarning ? "border-red-500" : "border-zinc-200 dark:border-white/10"
               }`}
             />
             {stockWarning && product && (
@@ -63,18 +63,18 @@ export default function LineItemRow({
             )}
           </div>
           <div className="flex-1">
-            <label className="mb-1 block text-xs text-slate-500 dark:text-slate-400">{priceLabel}</label>
+            <label className="mb-1 block text-xs text-zinc-500 dark:text-zinc-400">{priceLabel}</label>
             <input
               type="number"
               min="0"
               step="0.01"
               value={item.price}
               onChange={(e) => onChange(index, "price", e.target.value)}
-              className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400"
+              className="w-full rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:border-white/10 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400"
             />
           </div>
           <div className="pt-7">
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
               ${subtotal.toFixed(2)}
             </span>
           </div>
@@ -83,7 +83,7 @@ export default function LineItemRow({
       <button
         type="button"
         onClick={() => onRemove(index)}
-        className="mt-7 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-900/20"
+        className="mt-7 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
       >
         <Trash2 className="h-4 w-4" />
       </button>

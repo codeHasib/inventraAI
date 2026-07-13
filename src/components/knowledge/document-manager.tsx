@@ -3,7 +3,6 @@
 import { useState, useRef, useCallback } from "react";
 import { Upload, Trash2, FileText, Loader2, AlertCircle } from "lucide-react";
 import Card from "@/components/ui/card";
-import Button from "@/components/ui/button";
 import Badge from "@/components/ui/badge";
 import Skeleton from "@/components/ui/skeleton";
 import type { KnowledgeDocument, DocumentStatus } from "@/types/knowledge";
@@ -105,7 +104,7 @@ export default function DocumentManager({
 
   return (
     <Card className="flex h-full flex-col p-4">
-      <h3 className="mb-4 text-base font-semibold text-gray-900 dark:text-white">
+      <h3 className="mb-4 text-base font-semibold text-zinc-900 dark:text-zinc-100">
         Documents
       </h3>
 
@@ -117,8 +116,8 @@ export default function DocumentManager({
         onClick={() => inputRef.current?.click()}
         className={`mb-4 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 transition-colors ${
           dragOver
-            ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20"
-            : "border-slate-300 hover:border-blue-400 hover:bg-slate-50 dark:border-slate-700 dark:hover:border-blue-500 dark:hover:bg-slate-800/50"
+            ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10"
+            : "border-zinc-300 hover:border-emerald-400 hover:bg-zinc-50 dark:border-white/10 dark:hover:border-emerald-500 dark:hover:bg-white/[0.02]"
         }`}
       >
         <input
@@ -130,14 +129,14 @@ export default function DocumentManager({
           onChange={(e) => handleFiles(e.target.files)}
         />
         {uploading ? (
-          <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-500" />
+          <Loader2 className="mb-2 h-8 w-8 animate-spin text-emerald-500" />
         ) : (
-          <Upload className="mb-2 h-8 w-8 text-slate-400 dark:text-slate-500" />
+          <Upload className="mb-2 h-8 w-8 text-zinc-400 dark:text-zinc-500" />
         )}
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
           {uploading ? "Uploading..." : "Drop files here or click to upload"}
         </p>
-        <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
           PDF, DOCX, TXT, CSV &middot; Max 20 MB
         </p>
       </div>
@@ -159,8 +158,8 @@ export default function DocumentManager({
           </div>
         ) : documents.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <FileText className="mb-2 h-8 w-8 text-slate-300 dark:text-slate-600" />
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <FileText className="mb-2 h-8 w-8 text-zinc-300 dark:text-zinc-600" />
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
               No documents uploaded yet
             </p>
           </div>
@@ -171,16 +170,16 @@ export default function DocumentManager({
               return (
                 <div
                   key={doc._id}
-                  className="flex items-center gap-3 rounded-lg border border-slate-100 bg-slate-50/50 px-3 py-2.5 transition-colors hover:bg-slate-100/50 dark:border-slate-800 dark:bg-slate-800/30 dark:hover:bg-slate-800/50"
+                  className="flex items-center gap-3 rounded-lg border border-zinc-100 bg-zinc-50/50 px-3 py-2.5 transition-colors hover:bg-zinc-100/50 dark:border-white/[0.06] dark:bg-white/[0.02] dark:hover:bg-white/[0.04]"
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
-                    <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-500/10">
+                    <FileText className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
+                    <p className="truncate text-sm font-medium text-zinc-900 dark:text-zinc-100">
                       {doc.fileName}
                     </p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
                       {formatDate(doc.createdAt)}
                       {doc.status === "FAILED" && doc.errorMessage && (
                         <span className="ml-1 inline-flex items-center gap-1 text-red-500">
@@ -194,7 +193,7 @@ export default function DocumentManager({
                   <button
                     onClick={() => handleDelete(doc._id)}
                     disabled={deletingId === doc._id}
-                    className="shrink-0 rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20 dark:hover:text-red-400 disabled:opacity-50"
+                    className="shrink-0 rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 dark:hover:text-red-400 disabled:opacity-50"
                     aria-label="Delete document"
                   >
                     {deletingId === doc._id ? (

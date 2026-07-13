@@ -50,17 +50,17 @@ export default function Modal({
     >
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className={`relative z-10 w-full rounded-xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900 ${
+        className={`relative z-10 w-full rounded-xl border border-zinc-200/80 bg-white shadow-xl transition-all dark:border-white/[0.08] dark:bg-zinc-900 ${
           wide ? "max-w-2xl" : "max-w-lg"
         }`}
       >
-        <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between border-b border-zinc-200/80 px-6 py-4 dark:border-white/[0.08]">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-slate-800 dark:hover:text-gray-300"
+            className="rounded-lg p-1.5 text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-white/5 dark:hover:text-zinc-300"
           >
             <X className="h-5 w-5" />
           </button>

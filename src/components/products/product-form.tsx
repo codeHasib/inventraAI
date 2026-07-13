@@ -105,16 +105,16 @@ export default function ProductForm({
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Category <span className="text-red-500">*</span>
           </label>
           <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 ${
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
               errors.categoryId
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                : "border-gray-300 dark:border-gray-600"
+                : "border-zinc-200 dark:border-white/10"
             }`}
           >
             <option value="">Select a category</option>
@@ -126,16 +126,16 @@ export default function ProductForm({
         </div>
 
         <div className="space-y-1.5">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+          <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
             Supplier <span className="text-red-500">*</span>
           </label>
           <select
             value={supplierId}
             onChange={(e) => setSupplierId(e.target.value)}
-            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-blue-400 dark:focus:ring-blue-400/20 ${
+            className={`w-full appearance-none rounded-lg border bg-white px-4 py-2.5 text-sm text-zinc-900 transition-colors focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:bg-white/5 dark:text-zinc-100 dark:focus:border-emerald-400 dark:focus:ring-emerald-400/20 ${
               errors.supplierId
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                : "border-gray-300 dark:border-gray-600"
+                : "border-zinc-200 dark:border-white/10"
             }`}
           >
             <option value="">Select a supplier</option>
@@ -171,8 +171,8 @@ export default function ProductForm({
         rows={2}
       />
 
-      <div className="border-t border-slate-200 pt-4 dark:border-slate-700">
-        <p className="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">Pricing & Stock</p>
+      <div className="border-t border-zinc-200/80 pt-4 dark:border-white/[0.08]">
+        <p className="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-300">Pricing & Stock</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <Input
             label="Purchase Price"
@@ -235,7 +235,7 @@ export default function ProductForm({
         </div>
       </div>
 
-      <div className="flex justify-end gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+      <div className="flex justify-end gap-3 border-t border-zinc-200/80 pt-4 dark:border-white/[0.08]">
         <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
           Cancel
         </Button>

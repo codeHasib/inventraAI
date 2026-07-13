@@ -26,13 +26,13 @@ export default function ConfirmDialog({
   return (
     <Modal open={open} onClose={onClose} title="">
       <div className="flex flex-col items-center text-center">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
-          <AlertTriangle className="h-6 w-6 text-red-600 dark:text-red-400" />
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 dark:bg-red-500/10">
+          <AlertTriangle className="h-6 w-6 text-red-500 dark:text-red-400" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+        <h3 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
           {title}
         </h3>
-        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
           {message}
         </p>
         <div className="mt-6 flex w-full gap-3">

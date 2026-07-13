@@ -94,7 +94,7 @@ export default function ProfileForm({
       <Card className="space-y-6 p-6">
         {/* Business Info */}
         <div>
-          <h3 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
+          <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Business Information
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -140,11 +140,11 @@ export default function ProfileForm({
           </div>
         </div>
 
-        <hr className="border-slate-200 dark:border-slate-700" />
+        <hr className="border-zinc-200/80 dark:border-white/[0.08]" />
 
         {/* Regional */}
         <div>
-          <h3 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
+          <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Regional Settings
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -165,11 +165,11 @@ export default function ProfileForm({
           </div>
         </div>
 
-        <hr className="border-slate-200 dark:border-slate-700" />
+        <hr className="border-zinc-200/80 dark:border-white/[0.08]" />
 
         {/* Invoicing */}
         <div>
-          <h3 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
+          <h3 className="mb-4 text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             Invoicing & Inventory
           </h3>
           <div className="grid gap-4 sm:grid-cols-3">

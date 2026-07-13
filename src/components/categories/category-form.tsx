@@ -23,7 +23,7 @@ export default function CategoryForm({
   const [description, setDescription] = useState(
     initialData?.description ?? ""
   );
-  const [color, setColor] = useState(initialData?.color ?? "#3b82f6");
+  const [color, setColor] = useState(initialData?.color ?? "#10b981");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validate = () => {
@@ -62,7 +62,7 @@ export default function CategoryForm({
         rows={3}
       />
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">
           Color
         </label>
         <div className="flex items-center gap-3">
@@ -70,14 +70,14 @@ export default function CategoryForm({
             type="color"
             value={color}
             onChange={(e) => setColor(e.target.value)}
-            className="h-10 w-10 cursor-pointer rounded-lg border border-gray-300 dark:border-gray-600"
+            className="h-10 w-10 cursor-pointer rounded-lg border border-zinc-300 dark:border-zinc-600"
           />
-          <span className="text-sm text-slate-500 dark:text-slate-400">
+          <span className="text-sm text-zinc-500 dark:text-zinc-400">
             {color}
           </span>
         </div>
       </div>
-      <div className="flex justify-end gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+      <div className="flex justify-end gap-3 border-t border-zinc-200/80 pt-4 dark:border-white/[0.08]">
         <Button type="button" variant="secondary" onClick={onCancel} disabled={loading}>
           Cancel
         </Button>

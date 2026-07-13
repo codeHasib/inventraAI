@@ -23,19 +23,19 @@ const PRIORITY_CONFIG = {
     border: "border-l-red-500 dark:border-l-red-400",
     icon: AlertTriangle,
     iconColor: "text-red-600 dark:text-red-400",
-    badge: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+    badge: "bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-400",
   },
   Medium: {
     border: "border-l-amber-500 dark:border-l-amber-400",
     icon: AlertCircle,
     iconColor: "text-amber-600 dark:text-amber-400",
-    badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+    badge: "bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
   },
   Low: {
-    border: "border-l-blue-500 dark:border-l-blue-400",
+    border: "border-l-emerald-500 dark:border-l-emerald-400",
     icon: Info,
-    iconColor: "text-blue-600 dark:text-blue-400",
-    badge: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
+    badge: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
   },
 } as const;
 
@@ -58,36 +58,36 @@ function SectionCards({ sections }: { sections: ReportSectionItem[] }) {
         return (
           <div
             key={idx}
-            className={`rounded-lg border border-slate-200 border-l-4 bg-slate-50 p-3.5 dark:border-slate-700 dark:bg-slate-800/50 ${
-              cfg?.border ?? "border-l-slate-300 dark:border-l-slate-600"
+            className={`rounded-lg border border-zinc-200/80 border-l-4 bg-zinc-50 p-3.5 dark:border-white/[0.06] dark:bg-white/[0.02] ${
+              cfg?.border ?? "border-l-zinc-300 dark:border-l-zinc-600"
             }`}
           >
             <div className="flex items-start gap-3">
               <div
                 className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-md ${
                   cfg
-                    ? `bg-white dark:bg-slate-900 ${cfg.iconColor}`
-                    : "bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400"
+                    ? `bg-white dark:bg-zinc-900 ${cfg.iconColor}`
+                    : "bg-zinc-100 text-zinc-500 dark:bg-white/5 dark:text-zinc-400"
                 }`}
               >
                 <Icon className="h-3.5 w-3.5" />
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
                     {section.header}
                   </p>
                   {section.priority && (
                     <span
                       className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
-                        cfg?.badge ?? "bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-400"
+                        cfg?.badge ?? "bg-zinc-100 text-zinc-600 dark:bg-white/5 dark:text-zinc-400"
                       }`}
                     >
                       {section.priority}
                     </span>
                   )}
                 </div>
-                <p className="mt-1 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                <p className="mt-1 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
                   {section.content}
                 </p>
               </div>
@@ -107,10 +107,10 @@ function RecommendationList({ items }: { items: string[] }) {
       {items.map((rec, idx) => (
         <li
           key={idx}
-          className="flex items-start gap-2.5 rounded-lg bg-slate-50 px-3.5 py-2.5 dark:bg-slate-800/50"
+          className="flex items-start gap-2.5 rounded-lg bg-zinc-50 px-3.5 py-2.5 dark:bg-white/[0.02]"
         >
           <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-          <p className="text-sm text-gray-900 dark:text-white">{rec}</p>
+          <p className="text-sm text-zinc-900 dark:text-zinc-100">{rec}</p>
         </li>
       ))}
     </ul>
@@ -206,16 +206,16 @@ export default function ReportView({ data, chatId }: ReportViewProps) {
   return (
     <Card className="overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
+      <div className="flex items-center justify-between border-b border-zinc-200/80 px-5 py-4 dark:border-white/[0.08]">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
-            <FileText className="h-4.5 w-4.5 text-blue-600 dark:text-blue-400" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-50 dark:bg-emerald-500/10">
+            <FileText className="h-4.5 w-4.5 text-emerald-600 dark:text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               {data.title ?? "Business Analysis Report"}
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">
               AI-generated insights from your documents
             </p>
           </div>
@@ -225,7 +225,7 @@ export default function ReportView({ data, chatId }: ReportViewProps) {
             type="button"
             onClick={handleDownload}
             disabled={downloading}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200/80 bg-white px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-50 disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10"
           >
             <Download className="h-3.5 w-3.5" />
             {downloading ? "Saving..." : "Download"}
@@ -233,7 +233,7 @@ export default function ReportView({ data, chatId }: ReportViewProps) {
           <button
             type="button"
             disabled
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 opacity-60 cursor-not-allowed dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200/80 bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 opacity-60 cursor-not-allowed dark:border-white/10 dark:bg-white/5 dark:text-zinc-400"
           >
             <BarChart3 className="h-3.5 w-3.5" />
             Charts
@@ -244,8 +244,8 @@ export default function ReportView({ data, chatId }: ReportViewProps) {
       {/* Body */}
       <div className="space-y-5 p-5">
         {data.summary && (
-          <div className="rounded-lg bg-blue-50/60 p-4 dark:bg-blue-900/10">
-            <p className="text-sm leading-relaxed text-gray-800 dark:text-slate-300">
+          <div className="rounded-lg bg-emerald-50/60 p-4 dark:bg-emerald-500/5">
+            <p className="text-sm leading-relaxed text-zinc-800 dark:text-zinc-300">
               {data.summary}
             </p>
           </div>
