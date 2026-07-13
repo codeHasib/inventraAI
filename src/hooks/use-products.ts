@@ -55,10 +55,10 @@ export function useProducts(page = 1, limit = 20) {
       await fetchProducts();
       return res?.data as Product;
     } catch (error: any) {
-      const serverMessage = error?.response?.data?.message;
-      const msg = serverMessage || error?.message || "Failed to create product";
-      console.error("Product Creation Error Details:", error?.response?.data || error?.message);
-      toast.error(msg);
+      const errorData = error.response?.data;
+      console.error("Product Creation Error String:", typeof errorData === "object" ? JSON.stringify(errorData, null, 2) : errorData);
+      const readableMsg = errorData?.error || errorData?.message || "Validation failed. Please verify form details.";
+      toast.error(readableMsg);
       throw error;
     }
   };

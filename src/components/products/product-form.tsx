@@ -26,7 +26,6 @@ export default function ProductForm({
   loading,
 }: ProductFormProps) {
   const [name, setName] = useState(initialData?.name ?? "");
-  const [sku, setSku] = useState(initialData?.sku ?? "");
   const [categoryId, setCategoryId] = useState(initialData?.categoryId ?? "");
   const [supplierId, setSupplierId] = useState(initialData?.supplierId ?? "");
   const [description, setDescription] = useState(initialData?.description ?? "");
@@ -43,7 +42,6 @@ export default function ProductForm({
   const validate = () => {
     const e: Record<string, string> = {};
     if (!name.trim()) e.name = "Name is required";
-    if (!sku.trim()) e.sku = "SKU is required";
     if (!categoryId) e.categoryId = "Category is required";
     if (!supplierId) e.supplierId = "Supplier is required";
     if (!unit.trim()) e.unit = "Unit is required";
@@ -66,19 +64,21 @@ export default function ProductForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    const generatedSku = initialData?.sku ?? `INV-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+
     await onSubmit({
       name: name.trim(),
-      sku: sku.trim().toUpperCase(),
+      sku: generatedSku,
       categoryId: typeof categoryId === "object" && categoryId !== null ? (categoryId as unknown as { id: string }).id : categoryId,
       supplierId: typeof supplierId === "object" && supplierId !== null ? (supplierId as unknown as { id: string }).id : supplierId,
       description: description.trim(),
       brand: brand.trim(),
-      purchasePrice: parseFloat(purchasePrice) || 0,
-      sellingPrice: parseFloat(sellingPrice) || 0,
-      currentStock: parseInt(currentStock, 10) || 0,
-      minimumStock: parseInt(minimumStock, 10) || 0,
-      maximumStock: parseInt(maximumStock, 10) || 1000,
-      reorderLevel: parseInt(reorderLevel, 10) || 10,
+      purchasePrice: Number(purchasePrice) || 0,
+      sellingPrice: Number(sellingPrice) || 0,
+      currentStock: Number(currentStock) || 0,
+      minimumStock: Number(minimumStock) || 0,
+      maximumStock: Number(maximumStock) || 1000,
+      reorderLevel: Number(reorderLevel) || 10,
       unit: unit.trim(),
     });
   };
@@ -93,13 +93,6 @@ export default function ProductForm({
           onChange={(e) => setName(e.target.value)}
           error={errors.name}
           autoFocus
-        />
-        <Input
-          label="SKU"
-          placeholder="e.g. WM-001"
-          value={sku}
-          onChange={(e) => setSku(e.target.value)}
-          error={errors.sku}
         />
       </div>
 
