@@ -58,9 +58,11 @@ const slideVariants = {
 
 interface OnboardingFormProps {
   onSkip?: () => void;
+  skipLoading?: boolean;
+  skipError?: string;
 }
 
-export default function OnboardingForm({ onSkip }: OnboardingFormProps) {
+export default function OnboardingForm({ onSkip, skipLoading, skipError }: OnboardingFormProps) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -431,13 +433,29 @@ export default function OnboardingForm({ onSkip }: OnboardingFormProps) {
         </form>
 
         {onSkip && (
-          <button
-            type="button"
-            onClick={onSkip}
-            className="mt-4 w-full py-2 text-sm text-slate-400 transition-colors hover:text-white underline-offset-4 hover:underline"
-          >
-            Skip for now
-          </button>
+          <div className="mt-4">
+            {skipError && (
+              <p className="mb-2 text-center text-xs text-red-400">{skipError}</p>
+            )}
+            <button
+              type="button"
+              onClick={onSkip}
+              disabled={skipLoading}
+              className="flex w-full items-center justify-center gap-2 py-2 text-sm text-slate-400 transition-colors hover:text-white disabled:cursor-not-allowed disabled:opacity-50 underline-offset-4 hover:underline"
+            >
+              {skipLoading ? (
+                <>
+                  <svg className="h-4 w-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  Setting up&hellip;
+                </>
+              ) : (
+                "Skip for now"
+              )}
+            </button>
+          </div>
         )}
       </div>
     </div>

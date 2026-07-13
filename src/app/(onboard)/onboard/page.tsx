@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import api from "@/lib/axios";
 import OnboardingForm from "@/components/onboarding-form";
 
 function LoadingSpinner() {
@@ -18,11 +19,11 @@ function LoadingSpinner() {
   );
 }
 
-const SKIP_KEY = "inventraai_skip_onboarding";
-
 export default function OnboardPage() {
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
+  const [skipLoading, setSkipLoading] = useState(false);
+  const [skipError, setSkipError] = useState("");
 
   const user = data?.user as
     | { id: string; email: string; name: string; shopId?: string | null }
@@ -41,9 +42,30 @@ export default function OnboardPage() {
     }
   }, [isPending, user, router]);
 
-  const handleSkip = () => {
-    localStorage.setItem(SKIP_KEY, "true");
-    router.push("/dashboard");
+  const handleSkip = async () => {
+    if (!user) return;
+    setSkipLoading(true);
+    setSkipError("");
+
+    const slug = `default-shop-${user.id.slice(0, 8)}-${Date.now().toString(36)}`;
+
+    try {
+      await api.post("/shops/onboard", {
+        name: "My First Warehouse",
+        slug,
+        businessType: "General",
+        phone: "+10000000000",
+        email: user.email,
+        address: "Not specified",
+        currency: "USD",
+        timezone: "UTC",
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Failed to apply skip initialization:", error);
+      setSkipError("Could not initialize your workspace. Please try again.");
+      setSkipLoading(false);
+    }
   };
 
   if (isPending) return <LoadingSpinner />;
@@ -60,7 +82,11 @@ export default function OnboardPage() {
       </div>
 
       <div className="relative z-10 flex w-full flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <OnboardingForm onSkip={handleSkip} />
+        <OnboardingForm
+          onSkip={handleSkip}
+          skipLoading={skipLoading}
+          skipError={skipError}
+        />
       </div>
     </div>
   );
