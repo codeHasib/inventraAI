@@ -30,6 +30,7 @@ export default function ProductForm({
   const [supplierId, setSupplierId] = useState(initialData?.supplierId ?? "");
   const [description, setDescription] = useState(initialData?.description ?? "");
   const [brand, setBrand] = useState(initialData?.brand ?? "");
+  const [barcode, setBarcode] = useState(initialData?.barcode ?? "");
   const [purchasePrice, setPurchasePrice] = useState(String(initialData?.purchasePrice ?? ""));
   const [sellingPrice, setSellingPrice] = useState(String(initialData?.sellingPrice ?? ""));
   const [currentStock, setCurrentStock] = useState(String(initialData?.currentStock ?? "0"));
@@ -65,10 +66,12 @@ export default function ProductForm({
     e.preventDefault();
     if (!validate()) return;
     const generatedSku = initialData?.sku ?? `INV-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+    const finalBarcode = barcode.trim() || `BAR-${Date.now()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
 
     await onSubmit({
       name: name.trim(),
       sku: generatedSku,
+      barcode: finalBarcode,
       categoryId: typeof categoryId === "object" && categoryId !== null ? (categoryId as unknown as { id: string }).id : categoryId,
       supplierId: typeof supplierId === "object" && supplierId !== null ? (supplierId as unknown as { id: string }).id : supplierId,
       description: description.trim(),
@@ -146,6 +149,12 @@ export default function ProductForm({
           placeholder="Brand name"
           value={brand}
           onChange={(e) => setBrand(e.target.value)}
+        />
+        <Input
+          label="Barcode"
+          placeholder="Optional — auto-generated if left empty"
+          value={barcode}
+          onChange={(e) => setBarcode(e.target.value)}
         />
         <Input
           label="Unit"
