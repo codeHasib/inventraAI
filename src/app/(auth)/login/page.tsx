@@ -9,13 +9,20 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight, CheckCircle } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { loginSchema, type LoginFormData } from "@/types/auth";
 
-const card = {
-  hidden: { opacity: 0, y: 24, scale: 0.98 },
+const container = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+  },
+};
+
+const item = {
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" as const },
+    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
   },
 };
 
@@ -49,7 +56,6 @@ export default function LoginPage() {
 
     setSuccess(true);
 
-    // Fetch session to determine redirect target
     try {
       const { data: session } = await authClient.getSession();
       const user = session?.user as
@@ -58,7 +64,6 @@ export default function LoginPage() {
       const destination = user?.shopId ? "/dashboard" : "/onboard";
       setTimeout(() => router.push(destination), 900);
     } catch {
-      // Session fetch failed — default to dashboard
       setTimeout(() => router.push("/dashboard"), 900);
     }
   };
@@ -77,35 +82,36 @@ export default function LoginPage() {
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
           >
-            <CheckCircle className="h-16 w-16 text-green-500" />
+            <CheckCircle className="h-16 w-16 text-indigo-500" />
           </motion.div>
           <p className="text-lg font-medium text-gray-900 dark:text-white">
             Welcome back!
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-gray-500 dark:text-white/40">
             Redirecting&hellip;
           </p>
         </motion.div>
       ) : (
         <motion.div
           key="form"
-          variants={card}
+          variants={container}
           initial="hidden"
           animate="visible"
-          className="w-full max-w-md mx-auto mt-10"
+          className="w-full max-w-md"
         >
-          <div className="rounded-2xl border border-gray-200/60 bg-white/80 p-8 shadow-xl backdrop-blur-xl sm:p-10 dark:border-gray-800/60 dark:bg-gray-900/80">
-            <div className="mb-8 text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white">
+          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-xl dark:border-white/10 dark:bg-white/5 dark:backdrop-blur-xl dark:shadow-2xl sm:p-10">
+            {/* Header */}
+            <motion.div variants={item} className="mb-8 text-center">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500/15 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-400">
                 <Lock className="h-5 w-5" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                 Welcome back
               </h1>
-              <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">
-                Sign in to your account
+              <p className="mt-1.5 text-sm text-gray-500 dark:text-white/40">
+                Sign in to your inventory dashboard
               </p>
-            </div>
+            </motion.div>
 
             {serverError && (
               <motion.div
@@ -119,24 +125,24 @@ export default function LoginPage() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Email */}
-              <div className="space-y-1.5">
+              <motion.div variants={item} className="space-y-1.5">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  className="block text-sm font-medium text-gray-700 dark:text-white/60"
                 >
                   Email
                 </label>
                 <div className="relative">
-                  <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                  <Mail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-white/30" />
                   <input
                     id="email"
                     type="email"
                     placeholder="you@example.com"
                     autoComplete="email"
-                    className={`w-full rounded-lg border bg-white py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-500/20 ${
+                    className={`w-full rounded-lg border bg-gray-50 py-2.5 pl-10 pr-4 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-indigo-500/20 dark:bg-white/5 dark:text-white dark:placeholder-white/30 ${
                       errors.email
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                        : "border-gray-300 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-blue-400"
+                        : "border-gray-300 focus:border-indigo-500 dark:border-white/10"
                     }`}
                     {...register("email")}
                   />
@@ -144,34 +150,34 @@ export default function LoginPage() {
                 {errors.email && (
                   <p className="text-xs text-red-500">{errors.email.message}</p>
                 )}
-              </div>
+              </motion.div>
 
               {/* Password */}
-              <div className="space-y-1.5">
+              <motion.div variants={item} className="space-y-1.5">
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  className="block text-sm font-medium text-gray-700 dark:text-white/60"
                 >
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                  <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-white/30" />
                   <input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     autoComplete="current-password"
-                    className={`w-full rounded-lg border bg-white py-2.5 pl-10 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-blue-500/20 ${
+                    className={`w-full rounded-lg border bg-gray-50 py-2.5 pl-10 pr-11 text-sm text-gray-900 placeholder-gray-400 outline-none transition-all duration-200 focus:ring-2 focus:ring-indigo-500/20 dark:bg-white/5 dark:text-white dark:placeholder-white/30 ${
                       errors.password
                         ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
-                        : "border-gray-300 focus:border-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500 dark:focus:border-blue-400"
+                        : "border-gray-300 focus:border-indigo-500 dark:border-white/10"
                     }`}
                     {...register("password")}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((p) => !p)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-gray-400 transition-colors hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-0.5 text-gray-400 transition-colors hover:text-gray-600 dark:text-white/30 dark:hover:text-white/60"
                     tabIndex={-1}
                   >
                     {showPassword ? (
@@ -186,51 +192,42 @@ export default function LoginPage() {
                     {errors.password.message}
                   </p>
                 )}
-              </div>
+              </motion.div>
 
               {/* Submit */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="group flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-offset-gray-900"
-              >
-                {isSubmitting ? (
-                  <svg
-                    className="h-4 w-4 animate-spin"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                    />
-                  </svg>
-                ) : (
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                )}
-                {isSubmitting ? "Signing in..." : "Sign In"}
-              </button>
+              <motion.div variants={item}>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="group flex w-full items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-offset-[#050510]"
+                >
+                  {isSubmitting ? (
+                    <svg
+                      className="h-4 w-4 animate-spin"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                  ) : (
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  )}
+                  {isSubmitting ? "Signing in..." : "Sign In"}
+                </button>
+              </motion.div>
             </form>
 
-            <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            <motion.p variants={item} className="mt-6 text-center text-sm text-gray-500 dark:text-white/40">
               Don&apos;t have an account?{" "}
               <a
                 href="/register"
-                className="font-medium text-blue-600 transition-colors hover:text-blue-500 dark:text-blue-400"
+                className="font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
               >
                 Create one
               </a>
-            </p>
+            </motion.p>
           </div>
         </motion.div>
       )}

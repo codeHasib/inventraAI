@@ -1,4 +1,5 @@
-import ThemeToggle from "@/components/theme-toggle";
+import Navbar from "@/components/navbar";
+import InventoryMockup from "@/components/inventory-mockup";
 
 export default function AuthLayout({
   children,
@@ -6,18 +7,27 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-gray-50 px-4 dark:bg-gray-950">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-40 -top-40 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-500/5" />
-        <div className="absolute -bottom-40 -right-40 h-80 w-80 rounded-full bg-violet-500/10 blur-3xl dark:bg-violet-500/5" />
-        <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-600/5 blur-3xl dark:bg-blue-400/5" />
+    <div className="w-full min-h-screen overflow-x-hidden flex flex-col bg-gray-50 transition-colors duration-300 dark:bg-[#050510]">
+      {/* Background gradients */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute -left-[20%] top-[10%] h-[600px] w-[600px] rounded-full bg-indigo-300/30 blur-[120px] dark:bg-indigo-600/20" />
+        <div className="absolute right-[10%] top-[30%] h-[500px] w-[500px] rounded-full bg-purple-300/20 blur-[120px] dark:bg-purple-600/15" />
+        <div className="absolute bottom-[10%] left-[30%] h-[400px] w-[400px] rounded-full bg-blue-300/15 blur-[120px] dark:bg-blue-600/10" />
       </div>
 
-      <div className="absolute right-4 top-4 z-10 sm:right-8 sm:top-8">
-        <ThemeToggle />
-      </div>
+      <Navbar />
 
-      <div className="relative z-10 w-full">{children}</div>
+      <main className="relative z-10 flex w-full flex-1 flex-col md:flex-row">
+        {/* Side Panel A — Live Inventory Tracker (desktop only) */}
+        <div className="hidden w-full items-center justify-center p-8 md:flex md:w-1/2 lg:p-12">
+          <InventoryMockup />
+        </div>
+
+        {/* Side Panel B — Auth Forms */}
+        <div className="flex w-full items-center justify-center px-4 py-12 md:w-1/2">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }
