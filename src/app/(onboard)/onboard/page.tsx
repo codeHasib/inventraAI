@@ -65,7 +65,7 @@ export default function OnboardPage() {
       window.location.href = "/dashboard";
     } catch (error: any) {
       const detail = error.response?.data;
-      console.error("Backend Rejection Details:", detail || error.message);
+      // console.error("Backend Rejection Details:", detail || error.message);
       const msg =
         detail?.message || detail?.error || error.message || "Skip failed";
       setSkipError(msg);

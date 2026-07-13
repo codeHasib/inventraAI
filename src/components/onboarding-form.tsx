@@ -147,9 +147,9 @@ export default function OnboardingForm({ onSkip, skipLoading, skipError }: Onboa
       };
       await api.post("/shops/onboard", payload);
       setSuccess(true);
-      setTimeout(() => router.push("/dashboard"), 1200);
+      setTimeout(() => window.location.href = "/dashboard", 1200);
     } catch (err: unknown) {
-      console.error("Validation Error:", (err as any)?.response?.data);
+      // console.error("Validation Error:", (err as any)?.response?.data);
       const axiosErr = err as {
         response?: { status?: number; data?: { message?: string } };
       };
