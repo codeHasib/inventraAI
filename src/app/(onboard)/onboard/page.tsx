@@ -18,6 +18,8 @@ function LoadingSpinner() {
   );
 }
 
+const SKIP_KEY = "inventraai_skip_onboarding";
+
 export default function OnboardPage() {
   const router = useRouter();
   const { data, isPending } = authClient.useSession();
@@ -39,6 +41,11 @@ export default function OnboardPage() {
     }
   }, [isPending, user, router]);
 
+  const handleSkip = () => {
+    localStorage.setItem(SKIP_KEY, "true");
+    router.push("/dashboard");
+  };
+
   if (isPending) return <LoadingSpinner />;
 
   if (!user || user.shopId) return null;
@@ -53,7 +60,7 @@ export default function OnboardPage() {
       </div>
 
       <div className="relative z-10 flex w-full flex-1 flex-col items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <OnboardingForm />
+        <OnboardingForm onSkip={handleSkip} />
       </div>
     </div>
   );

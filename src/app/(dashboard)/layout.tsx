@@ -7,6 +7,8 @@ import Sidebar from "@/components/dashboard/sidebar";
 import Navbar from "@/components/dashboard/navbar";
 import MobileSidebar from "@/components/dashboard/mobile-sidebar";
 
+const SKIP_KEY = "inventraai_skip_onboarding";
+
 function LoadingSpinner() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-950">
@@ -41,7 +43,11 @@ export default function DashboardGuard({
       return;
     }
 
-    if (!user.shopId) {
+    const skipped =
+      typeof window !== "undefined" &&
+      localStorage.getItem(SKIP_KEY) === "true";
+
+    if (!user.shopId && !skipped) {
       router.replace("/onboard");
     }
   }, [isPending, user, router]);

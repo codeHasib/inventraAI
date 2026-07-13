@@ -56,9 +56,11 @@ const slideVariants = {
   }),
 };
 
-interface OnboardingFormProps {}
+interface OnboardingFormProps {
+  onSkip?: () => void;
+}
 
-export default function OnboardingForm({}: OnboardingFormProps) {
+export default function OnboardingForm({ onSkip }: OnboardingFormProps) {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -131,10 +133,21 @@ export default function OnboardingForm({}: OnboardingFormProps) {
   const onSubmit = async (data: OnboardingFormData) => {
     setServerError("");
     try {
-      await api.post("/shops/onboard", data);
+      const payload = {
+        name: data.name.trim(),
+        slug: data.slug.trim(),
+        businessType: data.businessType.trim(),
+        phone: data.phone.trim(),
+        email: data.email.trim(),
+        address: data.address.trim(),
+        currency: data.currency || "USD",
+        timezone: data.timezone || "UTC",
+      };
+      await api.post("/shops/onboard", payload);
       setSuccess(true);
       setTimeout(() => router.push("/dashboard"), 1200);
     } catch (err: unknown) {
+      console.error("Validation Error:", (err as any)?.response?.data);
       const axiosErr = err as {
         response?: { status?: number; data?: { message?: string } };
       };
@@ -416,6 +429,16 @@ export default function OnboardingForm({}: OnboardingFormProps) {
             )}
           </div>
         </form>
+
+        {onSkip && (
+          <button
+            type="button"
+            onClick={onSkip}
+            className="mt-4 w-full py-2 text-sm text-slate-400 transition-colors hover:text-white underline-offset-4 hover:underline"
+          >
+            Skip for now
+          </button>
+        )}
       </div>
     </div>
   );
