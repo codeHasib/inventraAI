@@ -15,10 +15,10 @@ import {
   Receipt,
   Sparkles,
   Settings,
-  Zap,
   ChevronDown,
   X,
 } from "lucide-react";
+import BrandLogo from "@/components/brand-logo";
 
 interface NavItem {
   href: string;
@@ -103,14 +103,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
           >
             {/* Brand + close */}
             <div className="flex h-16 items-center justify-between border-b border-zinc-200/80 px-6 transition-all duration-300 dark:border-white/[0.08]">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500">
-                  <Zap className="h-4 w-4 text-white" />
-                </div>
-                <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                  InventraAI
-                </span>
-              </div>
+              <BrandLogo />
               <button
                 onClick={onClose}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:text-zinc-500 dark:hover:bg-white/5 dark:hover:text-zinc-300"
@@ -224,7 +217,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
             {/* Footer */}
             <div className="border-t border-zinc-200/80 px-6 py-4 transition-all duration-300 dark:border-white/[0.08]">
               <p className="text-xs text-zinc-400 dark:text-zinc-500">
-                InventraAI v0.1.0
+                Inventra AI v0.1.0
               </p>
             </div>
           </motion.aside>

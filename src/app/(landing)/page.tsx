@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { authClient } from "@/lib/auth-client";
 import Button from "@/components/ui/button";
 import ThemeToggle from "@/components/theme-toggle";
+import Image from "next/image";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -123,9 +124,19 @@ export default function LandingPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b border-gray-200/60 bg-gray-50/80 backdrop-blur-2xl transition-colors duration-300 dark:border-white/5 dark:bg-[#050510]/60">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
-            InventraAI
-          </span>
+          <div className="flex items-center gap-2.5">
+            <Image
+              src="/logo.png"
+              alt="Inventra AI"
+              width={32}
+              height={32}
+              className="rounded-lg object-contain"
+              priority
+            />
+            <span className="text-lg font-bold tracking-tight text-gray-900 dark:text-white">
+              Inventra<span className="text-emerald-500">AI</span>
+            </span>
+          </div>
 
           {/* Desktop nav */}
           <div className="hidden items-center gap-3 md:flex">

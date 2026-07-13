@@ -15,9 +15,9 @@ import {
   Receipt,
   Sparkles,
   Settings,
-  Zap,
   ChevronDown,
 } from "lucide-react";
+import BrandLogo from "@/components/brand-logo";
 
 interface NavItem {
   href: string;
@@ -142,13 +142,8 @@ export default function Sidebar() {
   return (
     <aside className="hidden h-screen w-64 shrink-0 flex-col border-r border-zinc-200/80 bg-white transition-all duration-300 ease-in-out md:flex dark:border-white/[0.08] dark:bg-slate-950">
       {/* Brand */}
-      <div className="flex h-16 items-center gap-2.5 border-b border-zinc-200/80 px-6 transition-all duration-300 dark:border-white/[0.08]">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500">
-          <Zap className="h-4 w-4 text-white" />
-        </div>
-        <span className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-          InventraAI
-        </span>
+      <div className="flex h-16 items-center border-b border-zinc-200/80 px-6 transition-all duration-300 dark:border-white/[0.08]">
+        <BrandLogo />
       </div>
 
       {/* Nav */}
@@ -172,7 +167,7 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="border-t border-zinc-200/80 px-6 py-4 transition-all duration-300 dark:border-white/[0.08]">
         <p className="text-xs text-zinc-400 dark:text-zinc-500">
-          InventraAI v0.1.0
+          Inventra AI v0.1.0
         </p>
       </div>
     </aside>

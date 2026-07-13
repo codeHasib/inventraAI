@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "InventraAI",
-  description: "Smart inventory management for your business",
+  title: "Inventra AI — Smart Inventory Management",
+  description:
+    "Manage your global inventory ecosystem, track multi-warehouse assets, and unlock predictive supply analytics with elite speed and precision.",
 };
 
 const themeScript = `

@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Bell, Menu, X, LogOut, User, Settings, ChevronDown, AlertTriangle, PackageX } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import ThemeToggle from "@/components/theme-toggle";
@@ -207,11 +208,15 @@ export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-emerald-500">
-              <span className="text-[10px] font-bold text-white">IA</span>
-            </div>
+            <Image
+              src="/logo.png"
+              alt="Inventra AI"
+              width={28}
+              height={28}
+              className="rounded-md object-contain"
+            />
             <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-              InventraAI
+              Inventra<span className="text-emerald-500">AI</span>
             </span>
           </div>
 
