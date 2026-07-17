@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import api from "@/lib/axios";
 import OnboardingForm from "@/components/onboarding-form";
 
@@ -21,7 +21,7 @@ function LoadingSpinner() {
 
 export default function OnboardPage() {
   const router = useRouter();
-  const { data, isPending } = authClient.useSession();
+  const { data, isPending } = useSession();
   const [skipLoading, setSkipLoading] = useState(false);
   const [skipError, setSkipError] = useState("");
 

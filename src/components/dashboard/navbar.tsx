@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Bell, Menu, X, LogOut, User, Settings, ChevronDown, AlertTriangle, PackageX } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { authClient, useSession } from "@/lib/auth-client";
 import ThemeToggle from "@/components/theme-toggle";
 import { useAlerts } from "@/hooks/use-alerts";
 
@@ -15,7 +15,7 @@ interface NavbarProps {
 
 export default function Navbar({ mobileOpen, onToggleMobile }: NavbarProps) {
   const router = useRouter();
-  const { data: session } = authClient.useSession();
+  const { data: session } = useSession();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const desktopDropdownRef = useRef<HTMLDivElement>(null);
   const mobileDropdownRef = useRef<HTMLDivElement>(null);

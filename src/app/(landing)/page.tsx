@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import Button from "@/components/ui/button";
 import ThemeToggle from "@/components/theme-toggle";
 import Image from "next/image";
@@ -80,7 +80,7 @@ function BentoCard({
 
 export default function LandingPage() {
   const router = useRouter();
-  const { data, isPending } = authClient.useSession();
+  const { data, isPending } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const user = data?.user as

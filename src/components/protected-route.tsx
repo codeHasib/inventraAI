@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ export default function ProtectedRoute({
   redirectTo = "/",
 }: ProtectedRouteProps) {
   const router = useRouter();
-  const { data, isPending } = authClient.useSession();
+  const { data, isPending } = useSession();
 
   const user = data?.user;
 

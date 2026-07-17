@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { useSession } from "@/lib/auth-client";
 import Sidebar from "@/components/dashboard/sidebar";
 import Navbar from "@/components/dashboard/navbar";
 import MobileSidebar from "@/components/dashboard/mobile-sidebar";
@@ -26,7 +26,7 @@ export default function DashboardGuard({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { data, isPending } = authClient.useSession();
+  const { data, isPending } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const user = data?.user as

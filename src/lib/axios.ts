@@ -2,10 +2,6 @@ import axios from "axios";
 import { authClient } from "./auth-client";
 
 axios.defaults.withCredentials = true;
-console.log(
-  "AUTH_STATE_DEBUG: [axios] axios.defaults.withCredentials:",
-  axios.defaults.withCredentials,
-);
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
