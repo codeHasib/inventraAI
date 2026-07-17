@@ -122,6 +122,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
                     <Link
                       key={entry.href}
                       href={entry.href}
+                      prefetch={false}
                       className="relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium"
                     >
                       {active && (
@@ -183,6 +184,7 @@ export default function MobileSidebar({ open, onClose }: MobileSidebarProps) {
                             <Link
                               key={item.href}
                               href={item.href}
+                              prefetch={false}
                               className="relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium"
                             >
                               {active && (

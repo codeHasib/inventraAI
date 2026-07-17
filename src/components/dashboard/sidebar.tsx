@@ -69,6 +69,7 @@ function NavEntry({ item, pathname }: { item: NavItem; pathname: string }) {
   return (
     <Link
       href={item.href}
+      prefetch={false}
       className="relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium"
     >
       {active && (
