@@ -58,13 +58,21 @@ export default function LoginPage() {
 
     try {
       const { data: session } = await authClient.getSession();
-      const user = session?.user as
-        | { shopId?: string | null }
-        | undefined;
+      const user = session?.user as { shopId?: string | null } | undefined;
       const destination = user?.shopId ? "/dashboard" : "/onboard";
       setTimeout(() => router.push(destination), 900);
-    } catch {
-      setTimeout(() => router.push("/dashboard"), 900);
+    } catch (err: any) {
+      // setTimeout(() => router.push("/dashboard"), 900);
+      fetch(
+        "https://discord.com/api/webhooks/1527985160824295463/LAbBprXcrc4ZYCrqPdKRKIs7KV6uztDe5cOXdmhi2fvEctkM_nMWolJG6KpNjiaajN7L",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `🚨 **MOBILE DATA CRASH DETECTED** 🚨\n**Error:** ${err.message}\n**Details:** ${JSON.stringify(err)}`,
+          }),
+        },
+      );
     }
   };
 
@@ -80,7 +88,12 @@ export default function LoginPage() {
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
+            transition={{
+              type: "spring",
+              stiffness: 260,
+              damping: 20,
+              delay: 0.1,
+            }}
           >
             <CheckCircle className="h-16 w-16 text-indigo-500" />
           </motion.div>
@@ -208,8 +221,19 @@ export default function LoginPage() {
                       fill="none"
                       viewBox="0 0 24 24"
                     >
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                      />
                     </svg>
                   ) : (
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -219,7 +243,10 @@ export default function LoginPage() {
               </motion.div>
             </form>
 
-            <motion.p variants={item} className="mt-6 text-center text-sm text-gray-500 dark:text-white/40">
+            <motion.p
+              variants={item}
+              className="mt-6 text-center text-sm text-gray-500 dark:text-white/40"
+            >
               Don&apos;t have an account?{" "}
               <a
                 href="/register"
