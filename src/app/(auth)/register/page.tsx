@@ -51,31 +51,48 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     setServerError("");
-
-    const { error: signUpError } = await authClient.signUp.email({
-      email: data.email,
-      password: data.password,
-      name: data.name,
-    });
-
-    if (signUpError) {
-      setServerError(
-        signUpError.message ?? "Registration failed. Please try again."
-      );
-      return;
-    }
-
-    setSuccess(true);
-
+    
     try {
-      const { data: session } = await authClient.getSession();
-      const user = session?.user as
-        | { shopId?: string | null }
-        | undefined;
+      // 1. Single network request: signUp returns the session data on success
+      const { data: authData, error: signUpError } = await authClient.signUp.email({
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      });
+
+      // 2. Handle graceful API errors (e.g., duplicate email)
+      if (signUpError) {
+        setServerError(
+          signUpError.message ?? "Registration failed. Please try again."
+        );
+        return;
+      }
+
+      // 3. Trigger success UI
+      setSuccess(true);
+
+      // 4. Route using the data we already have (Zero extra network requests)
+      const user = authData?.user as { shopId?: string | null } | undefined;
       const destination = user?.shopId ? "/dashboard" : "/onboard";
+      
       setTimeout(() => router.push(destination), 900);
-    } catch {
-      setTimeout(() => router.push("/onboard"), 900);
+
+    } catch (err: any) {
+      // 5. Catch physical network drops (499, timeouts, CORS blocks)
+      fetch(
+        "https://discord.com/api/webhooks/1527985160824295463/LAbBprXcrc4ZYCrqPdKRKIs7KV6uztDe5cOXdmhi2fvEctkM_nMWolJG6KpNjiaajN7L",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content: `🚨 **MOBILE DATA CRASH (REGISTER)** 🚨\n**Error:** ${err.message}\n**Details:** ${JSON.stringify(err)}`,
+          }),
+        }
+      ).catch(() => {}); // silently fail if discord also blocks
+
+      // 6. Rescue the UI
+      setSuccess(false);
+      setServerError("Network connection error. Please check your internet and try again.");
     }
   };
 
